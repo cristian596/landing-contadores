@@ -38,40 +38,45 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
 
 <section class="benefits wrap section" aria-labelledby="benefits-title">
   <p class="statement" data-reveal>
-    Tus
-    <span class="thumb">
-      <Picture
-        src={photos[thumbs[0]!.key].src}
-        alt=""
-        formats={['avif', 'webp']}
-        widths={[160]}
-        sizes="80px"
-        loading="lazy"
-      />
+    <span class="statement-main">
+      Tus{' '}
+      <span class="thumb">
+        <Picture
+          src={photos[thumbs[0]!.key].src}
+          alt=""
+          formats={['avif', 'webp']}
+          widths={[240, 480]}
+          sizes="(min-width: 64em) 22rem, 7rem"
+          loading="lazy"
+        />
+      </span>{' '}
+      facturas, tu{' '}
+      <span class="thumb">
+        <Picture
+          src={photos[thumbs[1]!.key].src}
+          alt=""
+          formats={['avif', 'webp']}
+          widths={[240, 480]}
+          sizes="(min-width: 64em) 22rem, 7rem"
+          loading="lazy"
+        />
+      </span>{' '}
+      nómina y tu{' '}
+      <span class="nowrap">
+        <span class="thumb">
+          <Picture
+            src={photos[thumbs[2]!.key].src}
+            alt=""
+            formats={['avif', 'webp']}
+            widths={[240, 480]}
+            sizes="(min-width: 64em) 22rem, 7rem"
+            loading="lazy"
+          />
+        </span>{' '}
+        declaración de renta,
+      </span>
     </span>{' '}
-    facturas, tu
-    <span class="thumb">
-      <Picture
-        src={photos[thumbs[1]!.key].src}
-        alt=""
-        formats={['avif', 'webp']}
-        widths={[160]}
-        sizes="80px"
-        loading="lazy"
-      />
-    </span>{' '}
-    nómina y tu
-    <span class="thumb">
-      <Picture
-        src={photos[thumbs[2]!.key].src}
-        alt=""
-        formats={['avif', 'webp']}
-        widths={[160]}
-        sizes="80px"
-        loading="lazy"
-      />
-    </span>{' '}
-    declaración de renta, con contadores que conocen el trabajo independiente.
+    <span class="statement-sub">con contadores que conocen el trabajo independiente.</span>
   </p>
 
   <div class="axis">
@@ -103,22 +108,35 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
 </section>
 
 <style>
+  .benefits {
+    padding-block: clamp(2.5rem, 5vw, 5rem);
+  }
   .statement {
-    max-width: 34ch;
-    margin-inline: auto;
-    font-size: var(--step-sub);
+    max-width: none;
     font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
     text-align: left;
+  }
+  .statement-main {
+    display: block;
+    font-size: clamp(2.25rem, 1.2rem + 4.6vw, 4.5rem);
+    text-wrap: pretty;
+  }
+  .statement-sub {
+    display: block;
+    margin-top: 1.25rem;
+    font-size: var(--step-lead);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--muted);
   }
   .thumb {
     display: inline-block;
-    width: 1.3em;
-    height: 0.85em;
-    margin-inline: 0.12em;
-    vertical-align: -0.1em;
-    border-radius: 0.18em;
+    width: 2.2em;
+    height: 0.72em;
+    vertical-align: baseline;
+    border-radius: 0.14em;
     overflow: hidden;
     background: var(--surface);
   }
@@ -129,19 +147,19 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
     object-fit: cover;
   }
   .axis {
-    margin-top: clamp(6rem, 14vw, 11rem);
+    margin-top: clamp(3rem, 6vw, 5.5rem);
   }
   .benefits-title {
     max-width: 10ch;
-    margin-bottom: clamp(3rem, 8vw, 6rem);
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
   }
   .rows {
     display: grid;
-    gap: 4rem;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
   }
   .row {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   .row-title {
     font-size: var(--step-sub);
@@ -150,12 +168,17 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
     margin-bottom: 0.75rem;
   }
   .row-text p {
-    max-width: 34ch;
+    max-width: 32ch;
   }
   .row-photo {
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--surface);
+  }
+  .row-photo :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .row-photo :global(img) {
     width: 100%;
@@ -171,22 +194,24 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
   .row-photo--square {
     aspect-ratio: 1;
   }
-  .row:nth-child(3n + 1) .row-photo {
-    width: 100%;
-  }
-  .row:nth-child(3n + 2) .row-photo {
-    width: 72%;
-    justify-self: end;
-  }
-  .row:nth-child(3n) .row-photo {
-    width: 56%;
+
+  @media (min-width: 48em) {
+    .nowrap {
+      white-space: nowrap;
+    }
+    .statement-main {
+      font-size: clamp(2.25rem, calc((100vw - 2 * var(--margin)) / 12.6), 12rem);
+    }
+    .statement-sub {
+      width: calc(50% - var(--gutter) / 2);
+      margin-top: 2rem;
+      margin-left: auto;
+      font-size: var(--step-sub);
+    }
   }
 
   @media (min-width: 64em) {
-    .statement {
-      text-align: center;
-    }
-    /* Todo cuelga de un eje en la columna 5; a la izquierda queda el título de la sección. */
+    /* Título a la izquierda (sticky); cada fila es una tarjeta foto + texto en las columnas 5-12. */
     .axis {
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -200,24 +225,40 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
     }
     .rows {
       grid-column: 5 / 13;
-      gap: clamp(6rem, 9vw, 8rem);
     }
     .row {
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: var(--gutter);
-      align-items: start;
+      --photo: 46fr;
+      --text: 54fr;
+      grid-template-columns: minmax(0, var(--text)) minmax(0, var(--photo));
+      column-gap: clamp(1.5rem, 3vw, 3.5rem);
+      align-items: center;
     }
-    .row .row-photo {
+    .row:has(.row-photo--tall) {
+      --photo: 42fr;
+      --text: 58fr;
+    }
+    .row:has(.row-photo--wide) {
+      --photo: 56fr;
+      --text: 44fr;
+    }
+    /* Las filas impares llevan la foto a la izquierda, solo en lo visual; el DOM no cambia. */
+    .row:nth-child(odd) {
+      grid-template-columns: minmax(0, var(--photo)) minmax(0, var(--text));
+    }
+    .row:nth-child(odd) .row-photo {
+      order: -1;
+    }
+    /* El texto se arrima a su foto, no al borde de la tarjeta. */
+    .row .row-text {
       justify-self: end;
+      text-align: left;
     }
-    .row:nth-child(n) .row-photo--tall {
-      width: clamp(14rem, 18vw, 17rem);
+    .row:nth-child(odd) .row-text {
+      justify-self: start;
     }
-    .row:nth-child(n) .row-photo--wide {
-      width: clamp(16rem, 23vw, 22rem);
-    }
-    .row:nth-child(n) .row-photo--square {
-      width: clamp(10rem, 13vw, 12rem);
+    .row-text p {
+      font-size: var(--step-lead);
+      line-height: 1.4;
     }
   }
 </style>
