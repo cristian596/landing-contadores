@@ -63,8 +63,27 @@ import Icon from './Icon.astro';
     box-shadow: 0 24px 60px rgb(15 36 64 / 0.22); /* taste-skill-ignore: aviso flotante */
     outline: 1px solid rgb(15 36 64 / 0.08);
   }
-  .cookie-banner:not([hidden]) {
-    animation: banner-in 420ms var(--ease-out);
+  .cookie-banner {
+    transition:
+      opacity var(--t-ui) var(--ease-out),
+      translate var(--t-ui) var(--ease-out),
+      display var(--t-ui) allow-discrete;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+  .cookie-banner[hidden] {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cookie-banner[hidden] {
+      translate: 0 16px;
+    }
+    .cookie-banner {
+      @starting-style {
+        translate: 0 16px;
+      }
+    }
   }
   .banner-title {
     font-size: 1.125rem;
@@ -126,8 +145,33 @@ import Icon from './Icon.astro';
   .cookie-dialog::backdrop {
     background: rgb(10 26 48 / 0.55);
   }
+  .cookie-dialog {
+    transition:
+      opacity var(--t-ui) var(--ease-out),
+      translate var(--t-ui) var(--ease-out),
+      scale var(--t-ui) var(--ease-out),
+      display var(--t-ui) allow-discrete,
+      overlay var(--t-ui) allow-discrete;
+  }
   .cookie-dialog[open] {
-    animation: dialog-in 260ms var(--ease-out);
+    @starting-style {
+      opacity: 0;
+    }
+  }
+  .cookie-dialog:not([open]) {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cookie-dialog:not([open]) {
+      translate: 0 12px;
+      scale: 0.98;
+    }
+    .cookie-dialog[open] {
+      @starting-style {
+        translate: 0 12px;
+        scale: 0.98;
+      }
+    }
   }
   .dialog-head {
     display: flex;
@@ -150,29 +194,11 @@ import Icon from './Icon.astro';
   .dialog-intro {
     margin: 0.5rem 0 1.25rem;
   }
-  @keyframes banner-in {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-  }
-  @keyframes dialog-in {
-    from {
-      opacity: 0;
-      transform: translateY(12px) scale(0.98);
-    }
-  }
   @media (min-width: 48em) {
     .cookie-banner {
       left: max(1.5rem, env(safe-area-inset-left, 0px));
       bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
       right: auto;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .cookie-banner:not([hidden]),
-    .cookie-dialog[open] {
-      animation: none;
     }
   }
   @media (hover: hover) and (pointer: fine) {

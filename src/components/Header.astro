@@ -133,8 +133,27 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'
     border-radius: 0 0 var(--radius) var(--radius);
     box-shadow: 0 24px 48px rgb(10 26 48 / 0.25); /* taste-skill-ignore: menú flotante */
   }
-  .mobile-menu:not([hidden]) {
-    animation: menu-in var(--t-ui) var(--ease-out);
+  .mobile-menu {
+    transition:
+      opacity var(--t-ui) var(--ease-out),
+      translate var(--t-ui) var(--ease-out),
+      display var(--t-ui) allow-discrete;
+    @starting-style {
+      opacity: 0;
+    }
+  }
+  .mobile-menu[hidden] {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu[hidden] {
+      translate: 0 -8px;
+    }
+    .mobile-menu {
+      @starting-style {
+        translate: 0 -8px;
+      }
+    }
   }
   .mobile-list a {
     display: flex;
@@ -151,17 +170,6 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'
     width: 100%;
     margin-top: 1rem;
     min-height: 3.5rem;
-  }
-  @keyframes menu-in {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .mobile-menu:not([hidden]) {
-      animation: none;
-    }
   }
   @media (min-width: 64em) {
     .desktop-nav,
