@@ -1,0 +1,177 @@
+---
+import { legalNav, nav, site, type SiteInfo } from '../config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  invite?: boolean;
+  info?: SiteInfo;
+}
+const { invite = true, info = site } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-field">
+  <div class="wrap footer-top">
+    {invite && (
+      <div class="invite" data-reveal>
+        <h2 class="head invite-title">
+          Hablemos de <br class="br-wide" />
+          tus números.
+        </h2>
+        <a class="button" href="/contacto">
+          Agenda una consulta <Icon name="arrow" size={18} class="arrow" />
+        </a>
+      </div>
+    )}
+
+    <div class="footer-cols">
+      <div>
+        <h2 class="col-title">Contacto</h2>
+        <ul class="col-list">
+          <li>
+            <a class="link" href={`mailto:${info.email}`}>
+              {info.email}
+            </a>
+          </li>
+          <li>
+            <a class="link" href={`tel:${info.phone.replace(/[^\d+]/g, '')}`}>
+              {info.phone}
+            </a>
+          </li>
+          <li>{info.address}</li>
+          <li>{info.city}</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="col-title">Sitio</h2>
+        <ul class="col-list">
+          {nav.map((item) => (
+            <li>
+              <a class="link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h2 class="col-title">Legal</h2>
+        <ul class="col-list">
+          {legalNav.map((item) => (
+            <li>
+              <a class="link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+          <li>
+            <a class="link" href="/configuracion-de-cookies" data-open-cookie-settings>
+              Configuración de cookies
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap legal-row small">
+    <p>
+      © {year} {info.legalName} · NIT {info.nit}
+    </p>
+    <p>
+      Fotografías de{' '}
+      <a class="link" href="/creditos">
+        autores de Unsplash
+      </a>
+    </p>
+  </div>
+
+  <p class="big-name" aria-hidden="true">
+    {info.name}
+  </p>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--section) / 2);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .footer-top {
+    display: grid;
+    gap: 4rem;
+  }
+  .invite {
+    display: grid;
+    justify-items: start;
+    gap: 2rem;
+  }
+  .invite-title {
+    max-width: 12ch;
+  }
+  .br-wide {
+    display: none;
+  }
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 2.5rem var(--gutter);
+  }
+  .col-title {
+    font-size: var(--step-small);
+    font-weight: 500;
+    color: var(--on-field-muted);
+    margin-bottom: 0.75rem;
+  }
+  .col-list {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .col-list li {
+    overflow-wrap: anywhere;
+  }
+  .col-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .legal-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    margin-top: 5rem;
+    color: var(--on-field-muted);
+  }
+  .legal-row a {
+    color: var(--on-field);
+  }
+  .big-name {
+    max-width: none;
+    margin-top: 1rem;
+    padding-left: var(--margin);
+    font-size: clamp(5rem, 17vw, 20rem);
+    font-weight: 600;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    white-space: nowrap;
+    color: var(--accent);
+    /* El nombre se corta por el borde inferior: se reconoce por sus dos tercios superiores. */
+    transform: translateY(14%);
+    user-select: none;
+  }
+  @media (min-width: 64em) {
+    .invite {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+    }
+    .br-wide {
+      display: inline;
+    }
+    .footer-cols {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

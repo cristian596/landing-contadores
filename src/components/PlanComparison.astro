@@ -1,0 +1,196 @@
+---
+import { comparison as defaultRows, plans as defaultPlans, type FeatureRow, type Plan } from '../data/plans';
+
+interface Props {
+  items?: Plan[];
+  rows?: { group: string; rows: FeatureRow[] }[];
+}
+const { items: plans = defaultPlans, rows: comparison = defaultRows } = Astro.props;
+import Icon from './Icon.astro';
+---
+
+<section class="compare wrap section" aria-labelledby="compare-title">
+  <div class="compare-head" data-reveal>
+    <h2 id="compare-title" class="head">
+      Compara los planes
+    </h2>
+    <p class="muted">Todo lo que incluye cada plan, punto por punto.</p>
+  </div>
+
+  <div class="table-scroll" role="region" aria-labelledby="compare-title" tabindex="0">
+    <table class="table" role="table">
+      <caption class="sr-only">
+        Comparativa de características de los planes Básico, Profesional y Empresarial
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <td class="corner" role="cell"></td>
+          {plans.map((p) => (
+            <th scope="col" role="columnheader" data-plan={p.id}>
+              <span class="col-name">{p.name}</span>
+              <span class="col-price nums">{p.monthly} COP/mes</span>
+            </th>
+          ))}
+        </tr>
+      </thead>
+      {comparison.map((group) => (
+        <tbody role="rowgroup">
+          <tr class="group-row" role="row">
+            <th scope="colgroup" role="rowheader" colspan={plans.length + 1}>
+              {group.group}
+            </th>
+          </tr>
+          {group.rows.map((row) => (
+            <tr role="row">
+              <th scope="row" role="rowheader" class="row-label">
+                {row.label}
+              </th>
+              {plans.map((p) => {
+                const v = row.values[p.id];
+                return (
+                  <td role="cell" data-plan={p.id} data-name={p.name}>
+                    {v === true && <Icon name="check" size={22} label="Incluido" />}
+                    {v === false && <Icon name="minus" size={22} label="No incluido" class="no" />}
+                    {typeof v === 'string' && <span>{v}</span>}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      ))}
+    </table>
+  </div>
+</section>
+
+<style>
+  .compare-head {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .compare-head .head {
+    max-width: 12ch;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    margin-inline: calc(var(--margin) * -1);
+    padding-inline: var(--margin);
+    border-radius: var(--radius);
+  }
+  .table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  th,
+  td {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+  thead th {
+    vertical-align: bottom;
+    padding-bottom: 1.5rem;
+  }
+  .col-name {
+    display: block;
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .col-price {
+    display: block;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .group-row th {
+    padding-top: 2.25rem;
+    font-size: var(--step-lead);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .row-label {
+    width: 38%;
+    font-size: var(--step-body);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  tbody tr:not(.group-row):nth-child(even) > * {
+    background: var(--surface);
+  }
+  tbody tr:not(.group-row) > :first-child {
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+  tbody tr:not(.group-row) > :last-child {
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  td :global(.no) {
+    color: var(--muted);
+  }
+  [data-recommended] {
+    background: color-mix(in srgb, var(--accent) 22%, transparent) !important;
+  }
+  thead [data-recommended] {
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  /* En el teléfono cada fila se reorganiza: la característica arriba y los tres planes debajo, sin scroll lateral. */
+  @media (max-width: 47.99em) {
+    .table-scroll {
+      overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+    .table {
+      display: block;
+      min-width: 0;
+    }
+    .table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .table tbody {
+      display: block;
+    }
+    .table tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-radius: var(--radius);
+    }
+    .table th,
+    .table td {
+      display: block;
+      padding: 0.75rem 1rem;
+    }
+    .table .row-label,
+    .group-row th {
+      grid-column: 1 / -1;
+      width: auto;
+      padding-bottom: 0.25rem;
+    }
+    .table td::before {
+      content: attr(data-name);
+      display: block;
+      font-size: var(--step-small);
+      color: var(--muted);
+    }
+    tbody tr:not(.group-row):nth-child(even) {
+      background: var(--surface);
+    }
+    tbody tr:not(.group-row) > * {
+      border-radius: 0 !important;
+      background: none !important;
+    }
+    tbody tr:not(.group-row) > [data-recommended] {
+      background: color-mix(in srgb, var(--accent) 22%, transparent) !important;
+    }
+  }
+</style>

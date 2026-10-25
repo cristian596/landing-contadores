@@ -1,0 +1,223 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+const thumbs: { key: PhotoKey; word: string }[] = [
+  { key: 'calculadoraFacturas', word: 'facturas' },
+  { key: 'reunionMesa', word: 'nómina' },
+  { key: 'formulariosImpuestos', word: 'declaración de renta' },
+];
+
+const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wide' | 'square' }[] = [
+  {
+    title: 'Un honorario fijo',
+    text: 'Sabes desde el primer mes cuánto pagas. No cobramos por hora ni por cada llamada; lo que esté fuera del plan se cotiza antes.',
+    photo: 'independienteEscritorio',
+    shape: 'tall',
+  },
+  {
+    title: 'Fechas bajo control',
+    text: 'Te avisamos antes de cada vencimiento según el último dígito de tu NIT, con los soportes listos para revisar y firmar.',
+    photo: 'revisionDocumentos',
+    shape: 'wide',
+  },
+  {
+    title: 'Un contador para ti',
+    text: 'Siempre hablas con la misma persona, que sabe cómo facturas, qué gastos deduces y qué te preocupa.',
+    photo: 'contadorRevisa',
+    shape: 'square',
+  },
+  {
+    title: 'Reportes que se entienden',
+    text: 'Cada cierre trae un resumen en lenguaje claro: cuánto ganaste, cuánto reservar para impuestos y qué cambió.',
+    photo: 'colegasRevision',
+    shape: 'tall',
+  },
+];
+---
+
+<section class="benefits wrap section" aria-labelledby="benefits-title">
+  <p class="statement" data-reveal>
+    Tus
+    <span class="thumb">
+      <Picture
+        src={photos[thumbs[0]!.key].src}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[160]}
+        sizes="80px"
+        loading="lazy"
+      />
+    </span>{' '}
+    facturas, tu
+    <span class="thumb">
+      <Picture
+        src={photos[thumbs[1]!.key].src}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[160]}
+        sizes="80px"
+        loading="lazy"
+      />
+    </span>{' '}
+    nómina y tu
+    <span class="thumb">
+      <Picture
+        src={photos[thumbs[2]!.key].src}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[160]}
+        sizes="80px"
+        loading="lazy"
+      />
+    </span>{' '}
+    declaración de renta, con contadores que conocen el trabajo independiente.
+  </p>
+
+  <div class="axis">
+    <h2 id="benefits-title" class="head benefits-title" data-reveal>
+      Lo que ganas
+    </h2>
+
+    <ul class="rows">
+      {rows.map((row) => (
+        <li class="row">
+          <div class="row-text" data-reveal>
+            <h3 class="row-title">{row.title}</h3>
+            <p>{row.text}</p>
+          </div>
+          <div class:list={['row-photo', `row-photo--${row.shape}`]} data-reveal data-delay="1">
+            <Picture
+              src={photos[row.photo].src}
+              alt={photos[row.photo].alt}
+              formats={['avif', 'webp']}
+              widths={[360, 640, 960]}
+              sizes="(min-width: 64em) 22vw, 90vw"
+              loading="lazy"
+            />
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .statement {
+    max-width: 34ch;
+    margin-inline: auto;
+    font-size: var(--step-sub);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-align: left;
+  }
+  .thumb {
+    display: inline-block;
+    width: 1.3em;
+    height: 0.85em;
+    margin-inline: 0.12em;
+    vertical-align: -0.1em;
+    border-radius: 0.18em;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .thumb :global(picture),
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .axis {
+    margin-top: clamp(6rem, 14vw, 11rem);
+  }
+  .benefits-title {
+    max-width: 10ch;
+    margin-bottom: clamp(3rem, 8vw, 6rem);
+  }
+  .rows {
+    display: grid;
+    gap: 4rem;
+  }
+  .row {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .row-title {
+    font-size: var(--step-sub);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+  }
+  .row-text p {
+    max-width: 34ch;
+  }
+  .row-photo {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .row-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .row-photo--tall {
+    aspect-ratio: 4 / 5;
+  }
+  .row-photo--wide {
+    aspect-ratio: 3 / 2;
+  }
+  .row-photo--square {
+    aspect-ratio: 1;
+  }
+  .row:nth-child(3n + 1) .row-photo {
+    width: 100%;
+  }
+  .row:nth-child(3n + 2) .row-photo {
+    width: 72%;
+    justify-self: end;
+  }
+  .row:nth-child(3n) .row-photo {
+    width: 56%;
+  }
+
+  @media (min-width: 64em) {
+    .statement {
+      text-align: center;
+    }
+    /* Todo cuelga de un eje en la columna 5; a la izquierda queda el título de la sección. */
+    .axis {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+    }
+    .benefits-title {
+      grid-column: 1 / 5;
+      align-self: start;
+      position: sticky;
+      top: 2rem;
+    }
+    .rows {
+      grid-column: 5 / 13;
+      gap: clamp(6rem, 9vw, 8rem);
+    }
+    .row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--gutter);
+      align-items: start;
+    }
+    .row .row-photo {
+      justify-self: end;
+    }
+    .row:nth-child(n) .row-photo--tall {
+      width: clamp(14rem, 18vw, 17rem);
+    }
+    .row:nth-child(n) .row-photo--wide {
+      width: clamp(16rem, 23vw, 22rem);
+    }
+    .row:nth-child(n) .row-photo--square {
+      width: clamp(10rem, 13vw, 12rem);
+    }
+  }
+</style>

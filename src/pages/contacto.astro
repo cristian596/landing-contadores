@@ -1,0 +1,198 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import NextSteps from '../components/NextSteps.astro';
+import { photos } from '../data/photos';
+import { site } from '../config/site';
+---
+
+<Base
+  title="Contacto"
+  description="Agenda una consulta inicial sin costo con nuestro equipo de contabilidad y asesoría tributaria para independientes."
+  footerInvite={false}
+>
+  <section class="contact" aria-labelledby="page-title">
+    <div class="photo">
+      <Picture
+        src={photos.salaReuniones.src}
+        alt={photos.salaReuniones.alt}
+        formats={['avif', 'webp']}
+        widths={[640, 1024, 1600, 2400]}
+        sizes="100vw"
+        loading="eager"
+      />
+    </div>
+
+    <div class="wrap card-area">
+      <div class="card">
+        <h1 id="page-title" class="card-title" data-reveal>
+          Hablemos de tus números
+        </h1>
+        <p class="card-intro" data-reveal data-delay="1">
+          La consulta inicial no tiene costo. Te respondemos en un día hábil.
+        </p>
+        <div data-reveal data-delay="2">
+          <ContactForm />
+        </div>
+      </div>
+
+      <aside class="details" aria-labelledby="details-title" data-reveal data-delay="1">
+        <h2 id="details-title" class="details-title">
+          Datos de contacto
+        </h2>
+        <dl class="details-list">
+          <div>
+            <dt>Correo</dt>
+            <dd>
+              <a class="link" href={`mailto:${site.email}`}>
+                {site.email}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>Teléfono y WhatsApp</dt>
+            <dd>
+              <a class="link" href={`tel:${site.phone.replace(/[^\d+]/g, '')}`}>
+                {site.phone}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>Oficina</dt>
+            <dd>
+              {site.address}
+              <br />
+              {site.city}
+            </dd>
+          </div>
+        </dl>
+        <table class="hours">
+          <caption class="sr-only">Horario de atención</caption>
+          <tbody>
+            {site.hours.map((h) => (
+              <tr>
+                <th scope="row">{h.days}</th>
+                <td class="nums">{h.time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </aside>
+    </div>
+  </section>
+  <NextSteps />
+</Base>
+
+<style>
+  .contact {
+    position: relative;
+    padding-bottom: calc(var(--section) / 2);
+  }
+  .photo {
+    height: 70svh;
+    min-height: 22rem;
+    overflow: hidden;
+    background: var(--field);
+  }
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card-area {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    margin-top: -5rem;
+  }
+  .card {
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+  .card-title {
+    font-size: var(--step-head);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+  .card-intro {
+    margin: 0.75rem 0 2rem;
+  }
+  .details {
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border-radius: var(--radius);
+    background: var(--field);
+    color: var(--on-field);
+  }
+  .details-title {
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .details-list {
+    display: grid;
+    gap: 1rem;
+  }
+  .details-list dt {
+    font-size: var(--step-small);
+    color: var(--on-field-muted);
+  }
+  .details-list dd {
+    margin: 0.15rem 0 0;
+    overflow-wrap: anywhere;
+  }
+  .details-list a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+  .hours {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+  }
+  .hours th,
+  .hours td {
+    padding: 0.6rem 0;
+    text-align: left;
+    font-weight: 400;
+  }
+  .hours td {
+    text-align: right;
+  }
+  .hours tr + tr > * {
+    border-top: 1px solid color-mix(in srgb, var(--on-field) 18%, transparent);
+  }
+
+  /* En pantallas anchas: la foto ocupa toda la pantalla y la ficha del formulario flota sobre ella. */
+  @media (min-width: 64em) {
+    .contact {
+      min-height: 100svh;
+      padding-bottom: 0;
+    }
+    .photo {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+    .photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgb(10 26 48 / 0.35);
+    }
+    .card-area {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: var(--gutter);
+      align-items: start;
+      margin-top: 0;
+      padding-block: 4rem;
+    }
+    .details {
+      position: sticky;
+      top: 2rem;
+      order: -1;
+    }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../config/site';
+
+const toc = [
+  { id: 'alcance', label: 'Alcance' },
+  { id: 'que-recogemos', label: 'Qué información recogemos' },
+  { id: 'uso', label: 'Para qué la usamos' },
+  { id: 'terceros', label: 'Con quién la compartimos' },
+  { id: 'cookies', label: 'Cookies' },
+  { id: 'derechos', label: 'Tus derechos' },
+  { id: 'contacto', label: 'Contacto' },
+];
+---
+
+<Legal
+  title="Política de privacidad"
+  description="Qué información recoge este sitio web, para qué la usamos y cómo puedes controlarla."
+  toc={toc}
+>
+  <h2 id="alcance">1. Alcance</h2>
+  <p>
+    Esta política explica cómo {site.legalName} ({site.name}) trata la información de quienes visitan este
+    sitio web. El tratamiento de datos personales de clientes y contactos se rige además por nuestra{' '}
+    <a href="/tratamiento-de-datos">Política de tratamiento de datos personales</a>, conforme a la Ley 1581 de
+    2012.
+  </p>
+
+  <h2 id="que-recogemos">2. Qué información recogemos</h2>
+  <ul>
+    <li>
+      <strong>La que nos das:</strong> los datos que escribes en el formulario de contacto o nos envías por
+      correo o WhatsApp.
+    </li>
+    <li>
+      <strong>La de navegación:</strong> si aceptas las cookies de analítica, Google Analytics registra de
+      forma agregada las páginas visitadas, el tipo de dispositivo, la región aproximada y la fuente de la
+      visita.
+    </li>
+  </ul>
+  <p>Si rechazas las cookies de analítica, no recogemos información de navegación.</p>
+
+  <h2 id="uso">3. Para qué la usamos</h2>
+  <ul>
+    <li>Responder tus mensajes y preparar una propuesta.</li>
+    <li>Prestar el servicio contratado y cumplir nuestras obligaciones legales.</li>
+    <li>Entender qué contenidos son útiles y mejorar el sitio.</li>
+  </ul>
+
+  <h2 id="terceros">4. Con quién la compartimos</h2>
+  <p>
+    Solo con los proveedores necesarios para operar el sitio (alojamiento, servicio de formularios y, si lo
+    aceptas, Google Analytics) y con autoridades cuando una norma lo exija. No vendemos tu información.
+  </p>
+
+  <h2 id="cookies">5. Cookies</h2>
+  <p>
+    Consulta qué cookies usamos en la <a href="/politica-de-cookies">Política de cookies</a> y cambia tu
+    elección cuando quieras en <a href="/configuracion-de-cookies">Configuración de cookies</a>.
+  </p>
+
+  <h2 id="derechos">6. Tus derechos</h2>
+  <p>
+    Puedes conocer, actualizar, rectificar y pedir la supresión de tus datos, y revocar tu autorización. El
+    procedimiento está descrito en la{' '}
+    <a href="/tratamiento-de-datos#canales">Política de tratamiento de datos</a>.
+  </p>
+
+  <h2 id="contacto">7. Contacto</h2>
+  <p>
+    Escríbenos a <a href={`mailto:${site.privacyEmail}`}>{site.privacyEmail}</a> o llámanos al {site.phone}.
+  </p>
+</Legal>

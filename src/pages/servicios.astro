@@ -1,0 +1,210 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/services';
+import { photos } from '../data/photos';
+---
+
+<Base
+  title="Servicios"
+  description="Contabilidad general, asesoría tributaria, nómina, declaraciones y consultoría financiera para contadores y consultores independientes en Colombia."
+>
+  <section class="intro wrap" aria-labelledby="page-title">
+    <h1 id="page-title" class="head intro-title" data-reveal>
+      Servicios para independientes
+    </h1>
+    <div class="intro-side" data-reveal data-delay="1">
+      <p class="lead">
+        Cinco servicios que puedes tomar por separado o juntos en un plan mensual. En todos hablas con el
+        mismo contador.
+      </p>
+      <nav aria-label="Servicios en esta página">
+        <ul class="jump">
+          {services.map((s) => (
+            <li>
+              <a class="jump-link" href={`#${s.slug}`}>
+                <Icon name={s.icon} size={20} />
+                {s.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <div class="services">
+    {services.map((s, i) => (
+      <section
+        id={s.slug}
+        class:list={['service wrap section', i % 2 === 1 && 'service--flip']}
+        aria-labelledby={`${s.slug}-title`}
+      >
+        <div class="service-text">
+          <div class="service-icon" data-reveal>
+            <Icon name={s.icon} size={36} />
+          </div>
+          <h2 id={`${s.slug}-title`} class="service-title" data-reveal>
+            {s.title}
+          </h2>
+          <p class="lead" data-reveal data-delay="1">
+            {s.summary}
+          </p>
+          <p data-reveal data-delay="2">
+            {s.description}
+          </p>
+          <div class="deliver" data-reveal data-delay="3">
+            <h3 class="deliver-title">Lo que recibes</h3>
+            <ul class="deliver-list">
+              {s.deliverables.map((d) => (
+                <li>
+                  <Icon name="check" size={18} />
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="for small">
+              <strong>Para quién:</strong> {s.forWhom}
+            </p>
+          </div>
+        </div>
+        <div class="service-photo" data-reveal data-delay="1">
+          <Picture
+            src={photos[s.photo].src}
+            alt={photos[s.photo].alt}
+            formats={['avif', 'webp']}
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 64em) 40vw, 100vw"
+            loading="lazy"
+          />
+        </div>
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(3rem, 8vw, 7rem) clamp(2rem, 5vw, 4rem);
+  }
+  .intro-title {
+    max-width: 11ch;
+  }
+  .intro-side {
+    display: grid;
+    gap: 2rem;
+    align-content: end;
+  }
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .jump-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: var(--surface);
+    text-decoration: none;
+    transition: background-color var(--t-hover) ease;
+  }
+  .service {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .service:nth-child(even) {
+    background: var(--surface);
+  }
+  .service:nth-child(even) .jump-link {
+    background: var(--bg);
+  }
+  .service-text {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .service-icon {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: var(--field);
+    color: var(--accent);
+  }
+  .service-title {
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 3.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    max-width: 16ch;
+  }
+  .deliver {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+  .service:nth-child(odd) .deliver {
+    background: var(--surface);
+  }
+  .deliver-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .deliver-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .deliver-list li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .deliver-list :global(svg) {
+    flex: none;
+    margin-top: 0.2em;
+  }
+  .for {
+    margin-top: 1rem;
+  }
+  .service-photo {
+    border-radius: var(--radius);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--surface-strong);
+  }
+  .service-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 64em) {
+    .intro {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      column-gap: var(--gutter);
+    }
+    .service {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      column-gap: clamp(2rem, 6vw, 6rem);
+      align-items: center;
+    }
+    .service--flip .service-photo {
+      order: -1;
+    }
+    .service-photo {
+      aspect-ratio: 4 / 5;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .jump-link:hover {
+      background: var(--surface-strong);
+    }
+  }
+</style>

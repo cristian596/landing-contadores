@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import PlanTiles from '../components/PlanTiles.astro';
+import PlanIncludes from '../components/PlanIncludes.astro';
+import PlanFinder from '../components/PlanFinder.astro';
+import PlanComparison from '../components/PlanComparison.astro';
+---
+
+<Base
+  title="Planes y precios"
+  description="Tres planes de honorario fijo mensual para contadores y consultores independientes: Básico, Profesional y Empresarial."
+>
+  <PlanTiles headingLevel="h1" title="Planes de contabilidad" />
+  <PlanIncludes />
+  <PlanFinder />
+  <PlanComparison />
+</Base>

@@ -1,0 +1,204 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { photos, type PhotoKey } from '../data/photos';
+import Accordion from '../components/Accordion.astro';
+import { faqGroups } from '../data/faq';
+import { site } from '../config/site';
+
+const groupPhoto: Record<string, PhotoKey> = {
+  tributacion: 'formulariosImpuestos',
+  honorarios: 'calculadoraFacturas',
+  contratacion: 'colegasRevision',
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqGroups.flatMap((g) =>
+    g.items.map((i) => ({
+      '@type': 'Question',
+      name: i.q,
+      acceptedAnswer: { '@type': 'Answer', text: i.a },
+    })),
+  ),
+};
+---
+
+<Base
+  title="Preguntas frecuentes"
+  description="Respuestas sobre tributación de independientes, honorarios y el proceso para contratar el servicio contable."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+  <section class="faq-page wrap section" aria-labelledby="page-title">
+    <h1 id="page-title" class="faq-title" data-reveal>
+      Preguntas frecuentes
+    </h1>
+
+    <div class="groups">
+      {faqGroups.map((group) => (
+        <section class="group" aria-labelledby={`g-${group.id}`}>
+          <div class="group-side" data-reveal>
+            <h2 id={`g-${group.id}`} class="group-title">
+              {group.title}
+            </h2>
+            {groupPhoto[group.id] && (
+              <div class="group-photo">
+                <Picture
+                  src={photos[groupPhoto[group.id]!].src}
+                  alt={photos[groupPhoto[group.id]!].alt}
+                  formats={['avif', 'webp']}
+                  widths={[320, 560]}
+                  sizes="22vw"
+                  loading="lazy"
+                />
+              </div>
+            )}
+          </div>
+          <Accordion items={group.items} name={`faq-${group.id}`} />
+        </section>
+      ))}
+    </div>
+
+    <aside class="more" data-reveal>
+      <div class="more-photo">
+        <Picture
+          src={photos.reunionMesa.src}
+          alt={photos.reunionMesa.alt}
+          formats={['avif', 'webp']}
+          widths={[400, 720]}
+          sizes="(min-width: 64em) 25vw, 90vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="more-text">
+        <h2 class="more-title">¿No encuentras tu pregunta?</h2>
+        <p>
+          Escríbenos a{' '}
+          <a class="link" href={`mailto:${site.email}`}>
+            {site.email}
+          </a>{' '}
+          o agenda una consulta y te respondemos con tu caso concreto.
+        </p>
+        <a class="button button--ink" href="/contacto">
+          Agenda una consulta
+        </a>
+      </div>
+    </aside>
+  </section>
+</Base>
+
+<style>
+  .faq-title {
+    font-size: var(--step-head);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+    max-width: 11ch;
+  }
+  .groups {
+    display: grid;
+    gap: 4rem;
+    margin-top: clamp(3rem, 7vw, 5rem);
+  }
+  .group-title {
+    font-size: var(--step-lead);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    padding-inline: 1.5rem;
+  }
+  .group-photo {
+    display: none;
+  }
+  .more {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 5rem;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .more-photo {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: calc(var(--radius) - 4px);
+  }
+  .more-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .more-text {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    align-content: center;
+    padding: 0.5rem;
+  }
+  .more-title {
+    font-size: var(--step-sub);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .more p {
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 47.99em) {
+    .group-title {
+      padding-inline: 0;
+    }
+    .groups :global(.faq-q),
+    .groups :global(.faq-a) {
+      padding-inline: 1rem;
+    }
+    .groups :global(.faq-list) {
+      margin-inline: calc(var(--margin) * -1 + 0.25rem);
+    }
+  }
+  /* La pregunta empieza en la columna 5: a la izquierda, el tema con su foto; a la derecha, las preguntas. */
+  @media (min-width: 64em) {
+    .group {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: start;
+    }
+    .group-side {
+      grid-column: 1 / 5;
+      position: sticky;
+      top: 2rem;
+      display: grid;
+      gap: 1.5rem;
+      padding-right: 2rem;
+    }
+    .group-title {
+      padding: 1rem 0 0;
+      margin: 0;
+      font-size: var(--step-sub);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    .group-photo {
+      display: block;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .group-photo :global(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    /* Las filas abiertas se extienden 24px más allá del texto a ambos lados, hasta el margen. */
+    .group :global(.faq-list),
+    .group :global(.faq-empty) {
+      grid-column: 5 / 13;
+      margin-inline: -1.5rem;
+    }
+    .more {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      margin-left: calc((100% + var(--gutter)) / 12 * 4);
+    }
+  }
+</style>

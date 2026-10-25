@@ -1,0 +1,108 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { nav } from '../config/site';
+import { photos } from '../data/photos';
+---
+
+<Base
+  title="Página no encontrada"
+  description="La página que buscas no existe o cambió de dirección."
+  noindex
+>
+  <section class="nf wrap section" aria-labelledby="page-title">
+    <div class="nf-text">
+      <p class="nf-code nums" aria-hidden="true">
+        404
+      </p>
+      <h1 id="page-title" class="head" data-reveal>
+        Esta página no está en nuestros libros
+      </h1>
+      <p class="lead" data-reveal data-delay="1">
+        Puede que la dirección haya cambiado. Estas son las secciones del sitio:
+      </p>
+      <ul class="nf-links" data-reveal data-delay="2">
+        <li>
+          <a class="button button--ink" href="/">
+            Ir al inicio
+          </a>
+        </li>
+        {nav.map((item) => (
+          <li>
+            <a class="link nf-link" href={item.href}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="nf-photo" data-reveal data-delay="1">
+      <Picture
+        src={photos.libroMayor.src}
+        alt={photos.libroMayor.alt}
+        formats={['avif', 'webp']}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 64em) 45vw, 100vw"
+        loading="eager"
+      />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    gap: 2.5rem;
+    min-height: 70svh;
+    align-content: center;
+  }
+  .nf-code {
+    font-size: var(--step-head);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--accent-strong);
+  }
+  .nf-text {
+    display: grid;
+    gap: 1.25rem;
+    align-content: center;
+  }
+  .nf-text .head {
+    max-width: 14ch;
+  }
+  .nf-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin-top: 0.5rem;
+  }
+  .nf-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 500;
+  }
+  .nf-photo {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .nf-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 64em) {
+    .nf {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      column-gap: var(--gutter);
+      align-items: center;
+    }
+    .nf-photo {
+      aspect-ratio: 4 / 5;
+    }
+  }
+</style>

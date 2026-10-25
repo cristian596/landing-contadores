@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Benefits from '../components/Benefits.astro';
+import ServicesSummary from '../components/ServicesSummary.astro';
+import Process from '../components/Process.astro';
+import PlanTiles from '../components/PlanTiles.astro';
+import { site } from '../config/site';
+---
+
+<Base title={site.name}>
+  <Hero />
+  <Benefits />
+  <ServicesSummary />
+  <Process />
+  <PlanTiles />
+</Base>

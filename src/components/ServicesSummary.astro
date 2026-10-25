@@ -1,0 +1,125 @@
+---
+import { services } from '../data/services';
+import Icon from './Icon.astro';
+---
+
+<section class="summary section" aria-labelledby="summary-title">
+  <div class="wrap summary-grid">
+    <div class="summary-head" data-reveal>
+      <h2 id="summary-title" class="head">
+        Cinco servicios, un solo equipo
+      </h2>
+      <p class="muted">Toma uno o deja en nuestras manos todo el trabajo contable de tu actividad.</p>
+      <a class="button button--ink" href="/servicios">
+        Ver los servicios <Icon name="arrow" size={18} class="arrow" />
+      </a>
+    </div>
+
+    <ul class="summary-list">
+      {services.map((s, i) => (
+        <li data-reveal data-delay={String(Math.min(i, 4))}>
+          <a class="item" href={`/servicios#${s.slug}`}>
+            <span class="item-icon">
+              <Icon name={s.icon} size={28} />
+            </span>
+            <span class="item-body">
+              <span class="item-title">{s.title}</span>
+              <span class="item-text">{s.summary}</span>
+            </span>
+            <Icon name="arrow" size={22} class="item-arrow" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .summary {
+    background: var(--surface);
+  }
+  .summary-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .summary-head {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    align-content: start;
+  }
+  .summary-head .head {
+    max-width: 11ch;
+  }
+  .summary-list {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+    text-decoration: none;
+    transition:
+      background-color var(--t-hover) ease,
+      transform var(--t-press) var(--ease-out);
+  }
+  .item:active {
+    transform: scale(0.99);
+  }
+  .item-icon {
+    display: grid;
+    place-items: center;
+    color: var(--ink);
+  }
+  .item-body {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .item-title {
+    font-size: var(--step-lead);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    overflow-wrap: break-word;
+  }
+  .item-text {
+    color: var(--muted);
+  }
+  .item :global(.item-arrow) {
+    transition: transform var(--t-ui) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .item:hover {
+      background: var(--field);
+      color: var(--on-field);
+    }
+    .item:hover .item-text {
+      color: var(--on-field-muted);
+    }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .item:hover :global(.item-arrow) {
+      transform: translateX(4px);
+    }
+  }
+  @media (min-width: 64em) {
+    .summary-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--gutter);
+    }
+    .summary-head {
+      position: sticky;
+      top: 2rem;
+    }
+    .item {
+      padding: 1.75rem 2rem;
+      gap: 2rem;
+    }
+  }
+</style>

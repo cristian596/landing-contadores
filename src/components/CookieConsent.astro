@@ -1,0 +1,277 @@
+---
+import CookiePreferences from './CookiePreferences.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="cookie-banner" aria-labelledby="cookie-banner-title" hidden data-cookie-banner>
+  <div class="banner-text">
+    <h2 id="cookie-banner-title" class="banner-title">
+      Tu privacidad, tus reglas
+    </h2>
+    <p class="banner-copy">
+      Usamos cookies necesarias para que el sitio funcione y, solo si lo aceptas, cookies de analítica para
+      saber cómo se usa. Lee la{' '}
+      <a class="link" href="/politica-de-cookies">
+        política de cookies
+      </a>
+      .
+    </p>
+  </div>
+  <div class="banner-actions">
+    <button class="button button--ink" type="button" data-consent="all">
+      Aceptar todas
+    </button>
+    <button class="button button--ink" type="button" data-consent="none">
+      Rechazar no esenciales
+    </button>
+    <button class="text-button" type="button" data-open-cookie-settings>
+      Configurar
+    </button>
+  </div>
+</section>
+
+<dialog class="cookie-dialog" aria-labelledby="cookie-dialog-title" data-cookie-dialog>
+  <div class="dialog-head">
+    <h2 id="cookie-dialog-title" class="dialog-title">
+      Configuración de cookies
+    </h2>
+    <button class="dialog-close" type="button" aria-label="Cerrar" data-cookie-dialog-close>
+      <Icon name="close" size={22} />
+    </button>
+  </div>
+  <p class="small muted dialog-intro">
+    Elige qué categorías permites. Puedes cambiarlo cuando quieras desde el enlace «Configuración de cookies»
+    al pie de cada página.
+  </p>
+  <CookiePreferences idPrefix="dlg" />
+</dialog>
+
+<style>
+  .cookie-banner {
+    position: fixed;
+    z-index: 50;
+    left: max(0.75rem, env(safe-area-inset-left, 0px));
+    right: max(0.75rem, env(safe-area-inset-right, 0px));
+    bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+    display: grid;
+    gap: 1rem;
+    max-width: 44rem;
+    padding: 1.25rem;
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 60px rgb(15 36 64 / 0.22); /* taste-skill-ignore: aviso flotante */
+    outline: 1px solid rgb(15 36 64 / 0.08);
+  }
+  .cookie-banner:not([hidden]) {
+    animation: banner-in 420ms var(--ease-out);
+  }
+  .banner-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.35rem;
+  }
+  .banner-copy {
+    font-size: var(--step-body);
+    line-height: 1.45;
+  }
+  .banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .banner-actions .button {
+    flex: 1 1 12rem;
+  }
+  @media (max-width: 47.99em) {
+    .cookie-banner {
+      gap: 0.75rem;
+      padding: 1rem;
+    }
+    .banner-copy {
+      font-size: var(--step-body);
+      line-height: 1.45;
+    }
+    .banner-actions {
+      gap: 0.4rem;
+    }
+    .banner-actions .button {
+      min-height: 2.75rem;
+    }
+    .banner-actions .text-button {
+      flex: 1 1 100%;
+      min-height: 2.75rem;
+    }
+  }
+  .text-button {
+    min-height: 44px;
+    padding: 0 0.75rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .cookie-dialog {
+    width: min(36rem, calc(100vw - 1.5rem));
+    max-height: calc(100dvh - 1.5rem);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 0;
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--ink);
+    box-shadow: 0 30px 80px rgb(10 26 48 / 0.35); /* taste-skill-ignore: diálogo modal */
+    overscroll-behavior: contain;
+  }
+  .cookie-dialog::backdrop {
+    background: rgb(10 26 48 / 0.55);
+  }
+  .cookie-dialog[open] {
+    animation: dialog-in 260ms var(--ease-out);
+  }
+  .dialog-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .dialog-title {
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .dialog-close {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin: -0.5rem -0.5rem 0 0;
+    border-radius: 50%;
+  }
+  .dialog-intro {
+    margin: 0.5rem 0 1.25rem;
+  }
+  @keyframes banner-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.98);
+    }
+  }
+  @media (min-width: 48em) {
+    .cookie-banner {
+      left: max(1.5rem, env(safe-area-inset-left, 0px));
+      bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+      right: auto;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cookie-banner:not([hidden]),
+    .cookie-dialog[open] {
+      animation: none;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .dialog-close:hover {
+      background: var(--surface);
+    }
+  }
+</style>
+
+<script>
+  import { CONSENT_EVENT, makeConsent, readConsent, writeConsent, type Consent } from '../lib/consent';
+  import { disableAnalytics, loadAnalytics } from '../lib/analytics';
+
+  const GA_ID = import.meta.env.PUBLIC_GA_ID as string | undefined;
+  const storage = (() => {
+    try {
+      return window.localStorage;
+    } catch {
+      return undefined;
+    }
+  })();
+
+  const banner = document.querySelector<HTMLElement>('[data-cookie-banner]');
+  const dialog = document.querySelector<HTMLDialogElement>('[data-cookie-dialog]');
+  let current: Consent | null = readConsent(storage);
+  let lastTrigger: HTMLElement | null = null;
+
+  const syncForms = () => {
+    document.querySelectorAll<HTMLInputElement>('[data-analytics-toggle]').forEach((input) => {
+      input.checked = current?.analytics ?? false;
+    });
+  };
+
+  const apply = (analytics: boolean, message = 'Preferencias guardadas.') => {
+    const hadAnalytics = current?.analytics === true;
+    current = makeConsent(analytics);
+    writeConsent(storage, current);
+    syncForms();
+    if (banner) banner.hidden = true;
+    document
+      .querySelectorAll<HTMLElement>('[data-consent-status]')
+      .forEach((el) => (el.textContent = message));
+    window.dispatchEvent(new CustomEvent(CONSENT_EVENT, { detail: current }));
+    if (analytics) {
+      loadAnalytics(GA_ID);
+    } else if (hadAnalytics) {
+      disableAnalytics(GA_ID);
+      // Recargar asegura que gtag.js ya no esté en memoria tras retirar el consentimiento.
+      setTimeout(() => location.reload(), 600);
+    }
+  };
+
+  const openSettings = (trigger: HTMLElement | null) => {
+    if (!dialog) return;
+    lastTrigger = trigger;
+    syncForms();
+    dialog.querySelectorAll<HTMLElement>('[data-consent-status]').forEach((el) => (el.textContent = ''));
+    dialog.showModal();
+  };
+
+  const closeSettings = () => {
+    dialog?.close();
+  };
+  dialog?.addEventListener('close', () => lastTrigger?.focus());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) closeSettings();
+  });
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const consentButton = target.closest<HTMLElement>('[data-consent]');
+    if (consentButton) {
+      const all = consentButton.dataset.consent === 'all';
+      apply(all, all ? 'Aceptaste todas las cookies.' : 'Solo se usan las cookies necesarias.');
+      if (dialog?.open) setTimeout(closeSettings, 500);
+      return;
+    }
+    const settings = target.closest<HTMLElement>('[data-open-cookie-settings]');
+    if (settings && dialog) {
+      event.preventDefault();
+      openSettings(settings);
+      return;
+    }
+    if (target.closest('[data-cookie-dialog-close]')) closeSettings();
+  });
+
+  document.querySelectorAll<HTMLFormElement>('[data-cookie-form]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const analytics = form.querySelector<HTMLInputElement>('[data-analytics-toggle]')?.checked ?? false;
+      apply(analytics);
+      if (dialog?.open && dialog.contains(form)) setTimeout(closeSettings, 500);
+    });
+  });
+
+  syncForms();
+  if (current) {
+    if (current.analytics) loadAnalytics(GA_ID);
+  } else if (banner) {
+    banner.hidden = false;
+  }
+</script>

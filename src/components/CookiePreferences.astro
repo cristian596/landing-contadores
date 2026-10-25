@@ -1,0 +1,146 @@
+---
+// Formulario de preferencias por categoría. Se usa dentro del panel emergente y en /configuracion-de-cookies.
+interface Props {
+  idPrefix: string;
+}
+const { idPrefix } = Astro.props;
+---
+
+<form class="prefs" data-cookie-form novalidate>
+  <fieldset class="prefs-set">
+    <legend class="sr-only">Categorías de cookies</legend>
+
+    <div class="pref">
+      <div class="pref-text">
+        <label class="pref-name" for={`${idPrefix}-necessary`}>
+          Necesarias
+        </label>
+        <p class="muted" id={`${idPrefix}-necessary-desc`}>
+          Guardan tu decisión sobre cookies. Sin ellas el sitio no recordaría esta elección. Siempre activas.
+        </p>
+      </div>
+      <input
+        class="switch"
+        type="checkbox"
+        role="switch"
+        id={`${idPrefix}-necessary`}
+        checked
+        disabled
+        aria-describedby={`${idPrefix}-necessary-desc`}
+      />
+    </div>
+
+    <div class="pref">
+      <div class="pref-text">
+        <label class="pref-name" for={`${idPrefix}-analytics`}>
+          Analítica
+        </label>
+        <p class="muted" id={`${idPrefix}-analytics-desc`}>
+          Google Analytics 4 nos dice qué páginas se visitan y cómo se llega a ellas, de forma agregada. Solo
+          se carga si la activas.
+        </p>
+      </div>
+      <input
+        class="switch"
+        type="checkbox"
+        role="switch"
+        id={`${idPrefix}-analytics`}
+        name="analytics"
+        aria-describedby={`${idPrefix}-analytics-desc`}
+        data-analytics-toggle
+      />
+    </div>
+  </fieldset>
+
+  <div class="prefs-actions">
+    <button class="button button--ink" type="submit">
+      Guardar preferencias
+    </button>
+    <button class="text-button" type="button" data-consent="all">
+      Aceptar todas
+    </button>
+    <button class="text-button" type="button" data-consent="none">
+      Rechazar no esenciales
+    </button>
+  </div>
+  <p class="small prefs-status" role="status" aria-live="polite" data-consent-status></p>
+</form>
+
+<style>
+  .prefs-set {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .pref {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+  }
+  .pref-text {
+    min-width: 0;
+  }
+  .pref-name {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+  .switch {
+    appearance: none;
+    flex: none;
+    position: relative;
+    width: 3.25rem;
+    height: 2rem;
+    margin: 0;
+    border-radius: 999px;
+    background: var(--surface-strong);
+    cursor: pointer;
+    transition: background-color var(--t-ui) var(--ease-out);
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform var(--t-ui) var(--ease-out);
+  }
+  .switch:checked {
+    background: var(--ink);
+  }
+  .switch:checked::after {
+    transform: translateX(1.25rem);
+  }
+  .switch:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .prefs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin-top: 1.5rem;
+  }
+  .text-button {
+    min-height: 44px;
+    padding: 0 0.5rem;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .prefs-status {
+    min-height: 1.5em;
+    margin-top: 0.75rem;
+    color: var(--success);
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+const steps: { title: string; text: string; photo: PhotoKey }[] = [
+  {
+    title: 'Te respondemos',
+    text: 'En un día hábil te escribimos para agendar la consulta en el horario que prefieras.',
+    photo: 'independienteEscritorio',
+  },
+  {
+    title: 'Consulta sin costo',
+    text: 'En unos 30 minutos revisamos tu RUT, cómo facturas y qué te preocupa.',
+    photo: 'colegasRevision',
+  },
+  {
+    title: 'Propuesta clara',
+    text: 'Te enviamos el plan recomendado, su honorario y los documentos para empezar.',
+    photo: 'calculadoraFacturas',
+  },
+];
+---
+
+<section class="next wrap section" aria-labelledby="next-title">
+  <h2 id="next-title" class="head next-title" data-reveal>
+    Después de escribirnos
+  </h2>
+  <ol class="steps">
+    {steps.map((step, i) => (
+      <li class="step" data-reveal data-delay={String(i + 1)}>
+        <div class="step-photo">
+          <Picture
+            src={photos[step.photo].src}
+            alt={photos[step.photo].alt}
+            formats={['avif', 'webp']}
+            widths={[400, 640, 960]}
+            sizes="(min-width: 64em) 30vw, 90vw"
+            loading="lazy"
+          />
+        </div>
+        <h3 class="step-title">{step.title}</h3>
+        <p>{step.text}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .next-title {
+    max-width: 12ch;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .steps {
+    display: grid;
+    gap: 3rem var(--gutter);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .step-photo {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .step-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .step-title {
+    margin: 1.25rem 0 0.4rem;
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+  }
+  /* El primer paso lleva la foto más grande: la escalera baja de izquierda a derecha. */
+  @media (min-width: 48em) {
+    .steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64em) {
+    .steps {
+      grid-template-columns: 5fr 4fr 3fr;
+      align-items: start;
+    }
+    .step:nth-child(2) {
+      margin-top: 4rem;
+    }
+    .step:nth-child(3) {
+      margin-top: 8rem;
+    }
+  }
+</style>

@@ -1,0 +1,151 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+const steps: { verb: string; text: string; photo: PhotoKey }[] = [
+  {
+    verb: 'Revisamos',
+    text: 'Una consulta inicial sin costo: tu RUT, tus últimas declaraciones y la forma en que facturas.',
+    photo: 'escritorioCifras',
+  },
+  {
+    verb: 'Ordenamos',
+    text: 'Ponemos al día lo pendiente, organizamos tus soportes y conectamos tus cuentas.',
+    photo: 'grapadoraPapeles',
+  },
+  {
+    verb: 'Declaramos',
+    text: 'Presentamos cada declaración antes de su fecha, siempre con tu aprobación previa.',
+    photo: 'certificadoRetencion',
+  },
+  {
+    verb: 'Proyectamos',
+    text: 'Cada trimestre revisamos tus números contigo y planeamos lo que viene.',
+    photo: 'reportesGraficos',
+  },
+];
+---
+
+<section class="process on-field" aria-labelledby="process-title">
+  <div class="wrap process-intro section">
+    <h2 id="process-title" class="head" data-reveal>
+      Cómo trabajamos
+    </h2>
+    <p class="lead muted" data-reveal data-delay="1">
+      Cambiarte de contador es más sencillo de lo que parece. Así pasan las primeras semanas.
+    </p>
+  </div>
+
+  <ol class="panels">
+    {steps.map((step, i) => (
+      <li class="panel">
+        <Picture
+          src={photos[step.photo].src}
+          alt={photos[step.photo].alt}
+          formats={['avif', 'webp']}
+          widths={[640, 1024, 1600, 2400]}
+          sizes="100vw"
+          loading="lazy"
+          class="panel-img"
+        />
+        <div class="verb-track">
+          <h3 class="verb" data-reveal>
+            <span class="sr-only">Paso {i + 1}: </span>
+            {step.verb}
+          </h3>
+        </div>
+        <p class="panel-text" data-reveal>
+          {step.text}
+        </p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .process-intro {
+    display: grid;
+    gap: 1.5rem;
+  }
+  .process-intro .lead {
+    max-width: 32ch;
+  }
+  .panels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .panel {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    display: grid;
+    background: var(--field-deep);
+  }
+  .panel :global(picture) {
+    position: absolute;
+    inset: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .panel :global(.panel-img) {
+        animation: panel-drift linear both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 100%;
+      }
+    }
+  }
+  @keyframes panel-drift {
+    from {
+      transform: scale(1.12);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  .panel :global(.panel-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Velo neutro: mantiene legible el texto claro sobre cualquier foto. */
+  .panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(10 26 48 / 0.58);
+  }
+  .verb-track {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    padding: 6rem var(--margin) 10rem;
+  }
+  /* Un verbo por etapa, centrado sobre su foto: leídos en orden son el título y la secuencia. */
+  .verb {
+    text-align: center;
+    font-size: var(--step-display);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    color: var(--on-field);
+  }
+  .panel-text {
+    position: absolute;
+    z-index: 1;
+    left: var(--margin);
+    right: var(--margin);
+    bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+    max-width: 34ch;
+    font-size: var(--step-lead);
+    line-height: 1.35;
+    color: var(--on-field);
+  }
+  @media (min-width: 64em) {
+    .process-intro {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: end;
+    }
+  }
+</style>

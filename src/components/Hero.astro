@@ -1,0 +1,164 @@
+---
+import { Picture } from 'astro:assets';
+import { photos } from '../data/photos';
+import Icon from './Icon.astro';
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <h1 id="hero-title" class="hero-line display">
+    <span class="word word-1">Contabilidad</span>
+    <span class="strip">
+      <Picture
+        src={photos.libroMayor.src}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(min-width: 48em) 45vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="strip-img"
+      />
+    </span>
+    <span class="word word-2">sin sobresaltos</span>
+  </h1>
+
+  <div class="hero-foot">
+    <p class="lead hero-sub">
+      Llevamos la contabilidad, los impuestos y la nómina de contadores y consultores independientes en
+      Colombia, con un honorario fijo cada mes.
+    </p>
+    <div class="hero-actions">
+      <a class="button" href="/contacto">
+        Agenda una consulta <Icon name="arrow" size={18} class="arrow" />
+      </a>
+      <a class="link hero-secondary" href="/planes">
+        Ver planes y precios
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: calc(100svh - 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(2rem, 6vh, 4.5rem);
+    padding-block: 2rem clamp(2rem, 6vh, 4rem);
+  }
+  .hero-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0.18em;
+    font-size: clamp(2.75rem, 12vw, 11.5rem);
+    font-weight: 500;
+  }
+  .word {
+    display: block;
+  }
+  /* En el teléfono la foto ocupa su propia línea entre las dos mitades de la frase. */
+  .strip {
+    display: block;
+    flex: 1 0 100%;
+    order: 0;
+    aspect-ratio: 2 / 1;
+    margin-block: 0.12em 0.18em;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .strip :global(picture),
+  .strip :global(img) {
+    width: 100%;
+    height: 100%;
+  }
+  .strip :global(img) {
+    object-fit: cover;
+    object-position: 50% 62%;
+  }
+  .word-2 {
+    flex-basis: 100%;
+  }
+  .hero-foot {
+    display: grid;
+    gap: 1.75rem;
+  }
+  .hero-sub {
+    max-width: 36ch;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+  .hero-secondary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+  }
+
+  @media (min-width: 48em) {
+    .hero-line {
+      font-size: clamp(4rem, 10vw, 11.5rem);
+      row-gap: 0.04em;
+    }
+    /* En pantallas anchas la foto reemplaza un tramo de la primera línea: mide una altura de mayúscula. */
+    .strip {
+      flex: 1 1 0;
+      min-width: 1.4em;
+      aspect-ratio: auto;
+      height: 0.74em;
+      margin: 0 0 0 0.06em;
+    }
+    .hero-foot {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: end;
+    }
+    .hero-actions {
+      justify-content: flex-end;
+    }
+  }
+
+  /* El movimiento firma del sitio: la foto se abre como un obturador y se asienta. */
+  @media (prefers-reduced-motion: no-preference) {
+    .strip {
+      animation: shutter 1100ms var(--ease-in-out) 200ms both;
+    }
+    .strip :global(img) {
+      animation: settle 1500ms var(--ease-soft) 200ms both;
+    }
+    .word,
+    .hero-foot {
+      animation: rise 900ms var(--ease-out) both;
+    }
+    .word-2 {
+      animation-delay: 120ms;
+    }
+    .hero-foot {
+      animation-delay: 420ms;
+    }
+  }
+  @keyframes shutter {
+    from {
+      clip-path: inset(0 100% 0 0 round var(--radius));
+    }
+    to {
+      clip-path: inset(0 0 0 0 round var(--radius));
+    }
+  }
+  @keyframes settle {
+    from {
+      transform: scale(1.12);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+</style>

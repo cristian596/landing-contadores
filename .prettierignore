@@ -1,0 +1,10 @@
+dist
+.astro
+node_modules
+.taste-skill
+.work
+playwright-report
+test-results
+package-lock.json
+src/assets
+dist-e2e

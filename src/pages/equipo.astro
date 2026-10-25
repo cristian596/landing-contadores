@@ -1,0 +1,133 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import TeamCards from '../components/TeamCards.astro';
+import { team } from '../data/team';
+import { photos } from '../data/photos';
+import { site } from '../config/site';
+
+const [lead] = team;
+---
+
+<Base
+  title="Equipo"
+  description="Contadores públicos y asesores que acompañan a independientes en su contabilidad, sus impuestos y su nómina."
+>
+  <section class="about wrap section" aria-labelledby="page-title">
+    <h1 id="page-title" class="head about-title" data-reveal>
+      El equipo detrás de tus números
+    </h1>
+
+    <div class="about-body">
+      <dl class="facts small" data-reveal>
+        <div>
+          <dt>Dónde</dt>
+          <dd>{site.city}</dd>
+        </div>
+        <div>
+          <dt>Desde</dt>
+          <dd>[Año de fundación]</dd>
+        </div>
+        <div>
+          <dt>Escríbenos</dt>
+          <dd>
+            <a class="link" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="bio" data-reveal data-delay="1">
+        {lead && (
+          <p class="bio-text">
+            <span class="drop">
+              <Picture
+                src={photos[lead.photo].src}
+                alt={`Retrato de ${lead.name}`}
+                formats={['avif', 'webp']}
+                widths={[160, 320]}
+                sizes="9rem"
+                loading="lazy"
+              />
+            </span>
+            <strong>{lead.name}</strong> fundó {site.name} para dar a los independientes el acompañamiento
+            contable de una empresa grande, sin su costo.
+          </p>
+        )}
+        <p class="bio-more">
+          Hoy atendemos a profesionales de [N] ciudades del país. Cada cliente tiene un contador asignado y el
+          resto del equipo detrás: tributación, nómina y finanzas, cada una con su especialista.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <TeamCards />
+</Base>
+
+<style>
+  .about-title {
+    max-width: 13ch;
+    margin-bottom: clamp(3rem, 7vw, 6rem);
+  }
+  .about-body {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 1rem;
+    order: 2;
+  }
+  .facts dt {
+    color: var(--muted);
+  }
+  .facts dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .bio-text {
+    max-width: 52ch;
+    font-size: var(--step-sub);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+  .bio-more {
+    margin-top: 2rem;
+    max-width: 52ch;
+    font-size: var(--step-lead);
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .bio-text strong {
+    font-weight: 600;
+  }
+  /* El retrato funciona como una letra capital: ocupa tres líneas del párrafo. */
+  .drop {
+    float: left;
+    width: 3.75em;
+    height: 3.75em;
+    margin: 0.2em 0.5em 0 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .drop :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  @media (min-width: 64em) {
+    .about-body {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
+      column-gap: var(--gutter);
+    }
+    .facts {
+      order: 0;
+      grid-template-columns: 1fr;
+      align-content: start;
+    }
+  }
+</style>

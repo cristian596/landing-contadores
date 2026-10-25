@@ -1,0 +1,72 @@
+---
+// Íconos de línea dibujados para el sitio (trazo de 1.5 sobre una retícula de 24).
+type Name =
+  'ledger' | 'tax' | 'payroll' | 'filing' | 'growth' | 'arrow' | 'check' | 'minus' | 'menu' | 'close';
+interface Props {
+  name: Name;
+  size?: number;
+  class?: string;
+  label?: string;
+}
+const { name, size = 24, class: className, label } = Astro.props;
+---
+
+<svg
+  class:list={['icon', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  {name === 'ledger' && (
+    <>
+      <path d="M4 4.5h11a3 3 0 0 1 3 3V20H7a3 3 0 0 1-3-3z" />
+      <path d="M18 7.5h2V20h-2" />
+      <path d="M8 9h6M8 12.5h6M8 16h3.5" />
+    </>
+  )}
+  {name === 'tax' && (
+    <>
+      <path d="M6 3.5h9l3.5 3.5V20.5H6z" />
+      <path d="M15 3.5V7h3.5" />
+      <path d="m9.5 16.5 5-6" />
+      <circle cx="10" cy="11" r="1" />
+      <circle cx="14" cy="16" r="1" />
+    </>
+  )}
+  {name === 'payroll' && (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3.5 19.5a5.5 5.5 0 0 1 11 0" />
+      <path d="M15.5 5.5a3 3 0 0 1 0 5.5M17.5 14.5a5.5 5.5 0 0 1 3 5" />
+    </>
+  )}
+  {name === 'filing' && (
+    <>
+      <rect x="4" y="3.5" width="12.5" height="17" rx="1.5" />
+      <path d="M7.5 8h5.5M7.5 11.5h5.5M7.5 15h3" />
+      <circle cx="17.5" cy="16.5" r="3" />
+      <path d="m16.3 16.5.9.9 1.6-1.8" />
+    </>
+  )}
+  {name === 'growth' && (
+    <>
+      <path d="M3.5 20.5h17" />
+      <path d="M6 16.5v-3M10.5 16.5v-6M15 16.5V12M19.5 16.5V7" />
+      <path d="m5.5 9.5 4.5-4 4 3 5-4.5" />
+    </>
+  )}
+  {name === 'arrow' && <path d="M5 12h14m-5-5 5 5-5 5" />}
+  {name === 'check' && <path d="m5 12.5 4.5 4.5L19 7.5" />}
+  {name === 'minus' && <path d="M7 12h10" />}
+  {name === 'menu' && <path d="M4 8h16M4 16h16" />}
+  {name === 'close' && <path d="m6 6 12 12M18 6 6 18" />}
+</svg>

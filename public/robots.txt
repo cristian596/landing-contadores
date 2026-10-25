@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Reemplazar el dominio cuando se defina PUBLIC_SITE_URL.
+Sitemap: https://www.ejemplo.com/sitemap-index.xml

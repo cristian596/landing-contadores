@@ -1,0 +1,168 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../config/site';
+
+const toc = [
+  { id: 'responsable', label: 'Responsable del tratamiento' },
+  { id: 'marco', label: 'Marco legal' },
+  { id: 'datos', label: 'Datos que tratamos' },
+  { id: 'finalidades', label: 'Finalidades' },
+  { id: 'autorizacion', label: 'Autorización' },
+  { id: 'derechos', label: 'Derechos del titular' },
+  { id: 'canales', label: 'Canales y procedimiento' },
+  { id: 'encargados', label: 'Encargados y transferencias' },
+  { id: 'seguridad', label: 'Seguridad y conservación' },
+  { id: 'vigencia', label: 'Vigencia y cambios' },
+];
+---
+
+<Legal
+  title="Política de tratamiento de datos personales"
+  description="Cómo recolectamos, usamos y protegemos tus datos personales conforme a la Ley 1581 de 2012 y sus decretos reglamentarios."
+  toc={toc}
+>
+  <h2 id="responsable">1. Responsable del tratamiento</h2>
+  <ul>
+    <li>
+      <strong>Razón social:</strong> {site.legalName}
+    </li>
+    <li>
+      <strong>NIT:</strong> {site.nit}
+    </li>
+    <li>
+      <strong>Domicilio:</strong> {site.address}, {site.city}
+    </li>
+    <li>
+      <strong>Correo para asuntos de datos personales:</strong>{' '}
+      <a href={`mailto:${site.privacyEmail}`}>{site.privacyEmail}</a>
+    </li>
+    <li>
+      <strong>Teléfono:</strong> {site.phone}
+    </li>
+  </ul>
+
+  <h2 id="marco">2. Marco legal</h2>
+  <p>
+    Esta política se expide en cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1377 de 2013
+    (compilado en el Decreto Único Reglamentario 1074 de 2015) y las demás normas que los modifiquen o
+    complementen, así como del artículo 15 de la Constitución Política de Colombia.
+  </p>
+
+  <h2 id="datos">3. Datos que tratamos</h2>
+  <p>Solo pedimos los datos necesarios para cada finalidad:</p>
+  <ul>
+    <li>
+      <strong>Formulario de contacto:</strong> nombre, correo electrónico, teléfono (opcional), servicio de
+      interés y el mensaje que nos envías.
+    </li>
+    <li>
+      <strong>Clientes:</strong> datos de identificación, tributarios, contables, laborales y financieros que
+      se requieran para prestar el servicio contratado.
+    </li>
+    <li>
+      <strong>Navegación:</strong> datos de uso del sitio recogidos por Google Analytics, solo si aceptas las
+      cookies de analítica.
+    </li>
+  </ul>
+  <p>
+    No solicitamos datos sensibles a través del sitio web. Si para prestar un servicio llegara a ser necesario
+    tratar un dato sensible, te lo informaremos y pediremos tu autorización expresa; responder preguntas sobre
+    datos sensibles es siempre facultativo. Este sitio no está dirigido a menores de edad.
+  </p>
+
+  <h2 id="finalidades">4. Finalidades</h2>
+  <ul>
+    <li>Responder tus solicitudes y preparar una propuesta de servicios.</li>
+    <li>Prestar los servicios contables, tributarios, de nómina y de consultoría contratados.</li>
+    <li>
+      Cumplir obligaciones legales, contables y tributarias, y atender requerimientos de autoridades
+      competentes.
+    </li>
+    <li>Facturar y gestionar el cobro de los servicios.</li>
+    <li>
+      Enviarte información relacionada con el servicio contratado (vencimientos, cambios normativos que te
+      afecten).
+    </li>
+    <li>
+      Medir de forma agregada el uso del sitio web para mejorarlo, solo con tu consentimiento de cookies de
+      analítica.
+    </li>
+  </ul>
+  <p>No vendemos ni cedemos tus datos a terceros para fines comerciales.</p>
+
+  <h2 id="autorizacion">5. Autorización</h2>
+  <p>
+    Tratamos tus datos con tu autorización previa, expresa e informada. En el formulario de contacto la
+    otorgas al marcar la casilla «Acepto el tratamiento de mis datos personales», que nunca está marcada por
+    defecto; sin ella el formulario no se envía. Conservamos prueba de la autorización (fecha y contenido del
+    envío).
+  </p>
+
+  <h2 id="derechos">6. Derechos del titular</h2>
+  <p>De acuerdo con el artículo 8 de la Ley 1581 de 2012, como titular tienes derecho a:</p>
+  <ol>
+    <li>
+      Conocer, actualizar y rectificar tus datos personales, incluidos los parciales, inexactos, incompletos,
+      fraccionados o que induzcan a error.
+    </li>
+    <li>Solicitar prueba de la autorización otorgada.</li>
+    <li>Ser informado, previa solicitud, sobre el uso que se ha dado a tus datos.</li>
+    <li>
+      Presentar quejas ante la Superintendencia de Industria y Comercio por infracciones a la ley, una vez
+      agotado el trámite de consulta o reclamo ante nosotros.
+    </li>
+    <li>
+      Revocar la autorización y/o solicitar la supresión de tus datos cuando no se respeten los principios,
+      derechos y garantías legales, siempre que no exista un deber legal o contractual de conservarlos.
+    </li>
+    <li>Acceder en forma gratuita a tus datos personales objeto de tratamiento.</li>
+  </ol>
+
+  <h2 id="canales">7. Canales y procedimiento para ejercer tus derechos</h2>
+  <p>
+    Puedes ejercer tus derechos escribiendo a <a href={`mailto:${site.privacyEmail}`}>{site.privacyEmail}</a>{' '}
+    o por escrito en {site.address}, {site.city}. Indica tu nombre, documento de identidad, la descripción de
+    tu solicitud, la dirección de respuesta y los documentos que quieras aportar. El área responsable de
+    atender estas solicitudes es [Área o persona responsable].
+  </p>
+  <h3>Consultas</h3>
+  <p>
+    Se responden en un plazo máximo de diez (10) días hábiles desde su recibo. Si no es posible atenderlas en
+    ese término, te informaremos los motivos y la nueva fecha, que no superará cinco (5) días hábiles
+    adicionales.
+  </p>
+  <h3>Reclamos</h3>
+  <p>
+    Si consideras que tus datos deben corregirse, actualizarse o suprimirse, o adviertes un incumplimiento,
+    puedes presentar un reclamo. Si está incompleto, te pediremos completarlo dentro de los cinco (5) días
+    hábiles siguientes; si pasan dos (2) meses sin que lo completes, se entenderá que desististe. El reclamo
+    se atiende en un máximo de quince (15) días hábiles, prorrogables hasta por ocho (8) días hábiles
+    adicionales, informándote el motivo.
+  </p>
+
+  <h2 id="encargados">8. Encargados y transferencias</h2>
+  <p>
+    Para operar el sitio usamos proveedores que tratan datos por nuestra cuenta como encargados: el servicio
+    de formularios [Nombre del proveedor de formularios] que recibe los mensajes del formulario de contacto,
+    el proveedor de alojamiento [Nombre del hosting] y, solo si lo aceptas, Google Analytics. Algunos de estos
+    proveedores pueden almacenar datos fuera de Colombia; en esos casos exigimos niveles adecuados de
+    protección conforme a la ley.
+  </p>
+
+  <h2 id="seguridad">9. Seguridad y conservación</h2>
+  <p>
+    Aplicamos medidas técnicas, humanas y administrativas para proteger tus datos contra acceso no autorizado,
+    pérdida o alteración. Conservamos los datos de contacto de quienes no se vinculan como clientes por [plazo
+    de conservación] y los de clientes durante la relación contractual y el tiempo que exijan las normas
+    contables y tributarias.
+  </p>
+  <p>
+    [Si aplica: indicar el registro de las bases de datos en el Registro Nacional de Bases de Datos (RNBD).]
+  </p>
+
+  <h2 id="vigencia">10. Vigencia y cambios</h2>
+  <p>
+    Esta política rige desde {site.legalUpdated}. Cualquier cambio sustancial se publicará en esta página y,
+    cuando la ley lo exija, te lo comunicaremos antes de aplicarlo.
+  </p>
+</Legal>

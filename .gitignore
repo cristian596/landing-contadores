@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.taste-skill/
+.work/
+playwright-report/
+test-results/
+dist-e2e

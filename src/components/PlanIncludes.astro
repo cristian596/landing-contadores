@@ -1,0 +1,107 @@
+---
+import { Picture } from 'astro:assets';
+import { photos, type PhotoKey } from '../data/photos';
+
+const items: { title: string; text: string; photo: PhotoKey; shape: string }[] = [
+  {
+    title: 'Un contador asignado',
+    text: 'La misma persona lleva tus cuentas todo el año.',
+    photo: 'contadorRevisa',
+    shape: 'tall',
+  },
+  {
+    title: 'Soportes en orden',
+    text: 'Facturas y extractos archivados en digital, listos para la DIAN.',
+    photo: 'escritorioCifras',
+    shape: 'square',
+  },
+  {
+    title: 'Avisos de vencimiento',
+    text: 'Te escribimos antes de cada fecha según tu NIT.',
+    photo: 'revisionDocumentos',
+    shape: 'portrait',
+  },
+  {
+    title: 'Reunión de revisión',
+    text: 'Repasamos tus números y lo que viene, con la frecuencia de tu plan.',
+    photo: 'reunionMesa',
+    shape: 'tall',
+  },
+];
+---
+
+<section class="includes wrap section" aria-labelledby="includes-title">
+  <h2 id="includes-title" class="head includes-title" data-reveal>
+    Siempre incluido
+  </h2>
+  <ul class="strip">
+    {items.map((item, i) => (
+      <li class:list={['item', `item--${item.shape}`]} data-reveal data-delay={String(i + 1)}>
+        <div class="item-photo">
+          <Picture
+            src={photos[item.photo].src}
+            alt={photos[item.photo].alt}
+            formats={['avif', 'webp']}
+            widths={[320, 560, 800]}
+            sizes="(min-width: 64em) 24vw, (min-width: 40em) 45vw, 90vw"
+            loading="lazy"
+          />
+        </div>
+        <h3 class="item-title">{item.title}</h3>
+        <p class="item-text">{item.text}</p>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .includes-title {
+    max-width: 10ch;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .strip {
+    display: grid;
+    gap: 3rem var(--gutter);
+  }
+  .item-photo {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .item-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .item--tall .item-photo {
+    aspect-ratio: 4 / 5;
+  }
+  .item--square .item-photo {
+    aspect-ratio: 1;
+  }
+  .item--portrait .item-photo {
+    aspect-ratio: 3 / 4;
+  }
+  .item-title {
+    margin-top: 1.25rem;
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .item-text {
+    margin-top: 0.4rem;
+    max-width: 30ch;
+  }
+  @media (min-width: 40em) {
+    .strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Cuatro fotos de alturas distintas apoyadas en una misma línea base. */
+  @media (min-width: 64em) {
+    .strip {
+      grid-template-columns: 1.1fr 0.9fr 1fr 1.1fr;
+      align-items: end;
+    }
+  }
+</style>

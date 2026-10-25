@@ -1,0 +1,222 @@
+---
+// "Encuentra tu plan": tres preguntas que recomiendan un plan y lo resaltan en las tarjetas y en la tabla.
+// Sin JavaScript la sección no se muestra y la comparativa completa sigue disponible.
+const questions = [
+  {
+    name: 'team',
+    legend: '¿Cómo trabajas?',
+    options: [
+      { value: 'solo', label: 'Solo, como independiente' },
+      { value: 'small', label: 'Con un asistente o un equipo pequeño' },
+      { value: 'firm', label: 'Tengo una firma con varios empleados' },
+    ],
+  },
+  {
+    name: 'vat',
+    legend: '¿Eres responsable de IVA?',
+    options: [
+      { value: 'no', label: 'No' },
+      { value: 'yes', label: 'Sí' },
+      { value: 'unsure', label: 'No estoy seguro' },
+    ],
+  },
+  {
+    name: 'extra',
+    legend: '¿Qué más necesitas?',
+    options: [
+      { value: 'none', label: 'Solo contabilidad y declaraciones' },
+      { value: 'payroll', label: 'También nómina' },
+      { value: 'advisory', label: 'Consultoría financiera' },
+    ],
+  },
+];
+---
+
+<section class="finder on-field" aria-labelledby="finder-title" data-finder hidden>
+  <div class="wrap section finder-grid">
+    <div class="finder-head" data-reveal>
+      <h2 id="finder-title" class="head">
+        Encuentra tu plan
+      </h2>
+      <p class="lead muted">Tres preguntas y te decimos cuál encaja con tu actividad.</p>
+      <div class="result" aria-live="polite" data-finder-result>
+        <p class="result-empty muted">Responde las tres preguntas para ver tu recomendación.</p>
+      </div>
+    </div>
+
+    <form class="finder-form" data-finder-form>
+      {questions.map((q) => (
+        <fieldset class="question" data-reveal>
+          <legend class="question-legend">{q.legend}</legend>
+          <div class="options">
+            {q.options.map((o) => (
+              <label class="option">
+                <input type="radio" name={q.name} value={o.value} />
+                <span>{o.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ))}
+    </form>
+  </div>
+</section>
+
+<style>
+  .finder-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .finder-head {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+  .finder-head .head {
+    max-width: 9ch;
+  }
+  .result {
+    min-height: 7rem;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: var(--field-deep);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .result :global(p),
+    .result :global(a) {
+      transition:
+        opacity 240ms var(--ease-out),
+        translate 240ms var(--ease-out);
+      @starting-style {
+        opacity: 0;
+        translate: 0 8px;
+      }
+    }
+    .result :global(.result-plan) {
+      transition-delay: 40ms;
+    }
+  }
+  .result :global(.result-plan) {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--accent);
+  }
+  .result :global(.result-link) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  }
+  .finder-form {
+    display: grid;
+    gap: 2rem;
+  }
+  .question {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+  .question-legend {
+    padding: 0;
+    margin-bottom: 0.75rem;
+    font-size: var(--step-lead);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .option {
+    position: relative;
+    cursor: pointer;
+  }
+  .option input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .option span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--field-deep);
+    transition:
+      background-color var(--t-ui) var(--ease-out),
+      color var(--t-ui) var(--ease-out),
+      transform var(--t-press) var(--ease-out);
+  }
+  .option:active span {
+    transform: scale(0.97);
+  }
+  .option input:checked + span {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .option input:focus-visible + span {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .option:hover input:not(:checked) + span {
+      background: color-mix(in srgb, var(--field-deep) 70%, var(--on-field) 12%);
+    }
+  }
+  @media (min-width: 64em) {
+    .finder-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--gutter);
+    }
+  }
+</style>
+
+<script>
+  import { reasonFor, recommendPlan, type FinderAnswers } from '../lib/planFinder';
+  import { plans } from '../data/plans';
+
+  const section = document.querySelector<HTMLElement>('[data-finder]');
+  const form = document.querySelector<HTMLFormElement>('[data-finder-form]');
+  const result = document.querySelector<HTMLElement>('[data-finder-result]');
+
+  if (section && form && result) {
+    section.hidden = false;
+    form.addEventListener('change', () => {
+      const data = new FormData(form);
+      const team = data.get('team');
+      const vat = data.get('vat');
+      const extra = data.get('extra');
+      if (!team || !vat || !extra) return;
+      const answers = { team, vat, extra } as FinderAnswers;
+      const id = recommendPlan(answers);
+      const plan = plans.find((p) => p.id === id)!;
+
+      result.replaceChildren();
+      const label = document.createElement('p');
+      label.className = 'small muted';
+      label.textContent = 'Te recomendamos';
+      const name = document.createElement('p');
+      name.className = 'result-plan';
+      name.textContent = `Plan ${plan.name}`;
+      const why = document.createElement('p');
+      why.textContent = reasonFor(answers, id);
+      const link = document.createElement('a');
+      link.className = 'link result-link';
+      link.href = `/contacto?plan=${id}`;
+      link.textContent = `Quiero el plan ${plan.name}`;
+      result.append(label, name, why, link);
+
+      document.querySelectorAll<HTMLElement>('[data-plan]').forEach((el) => {
+        el.toggleAttribute('data-recommended', el.dataset.plan === id);
+      });
+    });
+  }
+</script>

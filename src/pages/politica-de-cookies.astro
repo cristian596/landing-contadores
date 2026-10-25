@@ -1,0 +1,80 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../config/site';
+
+const toc = [
+  { id: 'que-son', label: 'Qué son las cookies' },
+  { id: 'cuales', label: 'Qué cookies usamos' },
+  { id: 'consentimiento', label: 'Tu consentimiento' },
+  { id: 'navegador', label: 'Desde tu navegador' },
+];
+---
+
+<Legal
+  title="Política de cookies"
+  description="Qué cookies usa este sitio, para qué sirven y cómo aceptarlas o rechazarlas."
+  toc={toc}
+>
+  <h2 id="que-son">1. Qué son las cookies</h2>
+  <p>
+    Son pequeños archivos o registros que un sitio guarda en tu navegador para recordar información entre
+    visitas. Algunas son necesarias para que el sitio funcione; otras, como las de analítica, solo se usan si
+    las aceptas.
+  </p>
+
+  <h2 id="cuales">2. Qué cookies usamos</h2>
+  <div class="table-wrap">
+    <table>
+      <caption class="sr-only">Cookies y almacenamiento usados por el sitio</caption>
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Proveedor</th>
+          <th scope="col">Para qué sirve</th>
+          <th scope="col">Duración</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>cc_consent</td>
+          <td>Necesaria</td>
+          <td>{site.name}</td>
+          <td>Guarda tu elección sobre cookies (almacenamiento local del navegador).</td>
+          <td>12 meses</td>
+        </tr>
+        <tr>
+          <td>_ga</td>
+          <td>Analítica</td>
+          <td>Google Analytics</td>
+          <td>Distingue visitantes de forma anónima para generar estadísticas.</td>
+          <td>2 años</td>
+        </tr>
+        <tr>
+          <td>_ga_[ID]</td>
+          <td>Analítica</td>
+          <td>Google Analytics</td>
+          <td>Mantiene el estado de la sesión de analítica.</td>
+          <td>2 años</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>No usamos cookies de publicidad ni de redes sociales.</p>
+
+  <h2 id="consentimiento">3. Tu consentimiento</h2>
+  <p>
+    En tu primera visita te mostramos un aviso con tres opciones: aceptar todas, rechazar las no esenciales o
+    configurar cada categoría. Google Analytics no se carga hasta que aceptas la categoría de analítica.
+    Puedes cambiar tu elección cuando quieras en{' '}
+    <a href="/configuracion-de-cookies">Configuración de cookies</a> o desde el enlace al pie de cada página;
+    si retiras el consentimiento, borramos las cookies de analítica de este dominio. Te volveremos a preguntar
+    pasados 12 meses o si esta política cambia.
+  </p>
+
+  <h2 id="navegador">4. Desde tu navegador</h2>
+  <p>
+    También puedes bloquear o borrar cookies desde la configuración de tu navegador. Si bloqueas las
+    necesarias, el sitio no podrá recordar tu elección y volverá a mostrarte el aviso.
+  </p>
+</Legal>

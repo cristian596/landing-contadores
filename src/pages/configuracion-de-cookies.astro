@@ -1,0 +1,57 @@
+---
+import { Picture } from 'astro:assets';
+import Legal from '../layouts/Legal.astro';
+import { photos } from '../data/photos';
+import CookiePreferences from '../components/CookiePreferences.astro';
+---
+
+<Legal
+  title="Configuración de cookies"
+  description="Acepta o rechaza cada categoría de cookies del sitio. Puedes cambiar tu elección cuando quieras."
+>
+  <h2>Tus preferencias</h2>
+  <p>
+    Activa o desactiva cada categoría y guarda. Los detalles de cada cookie están en la{' '}
+    <a href="/politica-de-cookies">Política de cookies</a>.
+  </p>
+  <noscript>
+    <p>
+      <strong>Necesitas JavaScript activo para cambiar tus preferencias.</strong> Sin JavaScript este sitio no
+      carga ninguna cookie de analítica.
+    </p>
+  </noscript>
+  <div class="panel">
+    <CookiePreferences idPrefix="page" />
+  </div>
+  <figure class="side-photo" slot="aside">
+    <Picture
+      src={photos.escritorioCifras.src}
+      alt={photos.escritorioCifras.alt}
+      formats={['avif', 'webp']}
+      widths={[400, 720]}
+      sizes="(min-width: 64em) 35vw, 90vw"
+      loading="lazy"
+    />
+    <figcaption class="small muted">
+      Sin tu permiso, este sitio no carga Google Analytics ni ninguna otra herramienta de medición.
+    </figcaption>
+  </figure>
+</Legal>
+
+<style>
+  .side-photo {
+    margin: 0;
+  }
+  .side-photo :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .side-photo figcaption {
+    margin-top: 0.75rem;
+  }
+  .panel {
+    margin-top: 2rem;
+  }
+</style>

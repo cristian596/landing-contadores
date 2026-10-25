@@ -1,0 +1,79 @@
+---
+// Banco de pruebas con datos extremos. Solo se genera en desarrollo: en producción no hay rutas.
+import Base from '../../layouts/Base.astro';
+import TeamCards from '../../components/TeamCards.astro';
+import PlanTiles from '../../components/PlanTiles.astro';
+import PlanComparison from '../../components/PlanComparison.astro';
+import Accordion from '../../components/Accordion.astro';
+import ContactForm from '../../components/ContactForm.astro';
+import { datasets, type Estado } from '../../dev/fixtures';
+
+export function getStaticPaths() {
+  if (!import.meta.env.DEV) return [];
+  return (['demo', 'extremo', 'vacio', 'uno'] as const).map((estado) => ({ params: { estado } }));
+}
+
+const estado = Astro.params.estado as Estado;
+const data = datasets[estado];
+const labels: Record<Estado, string> = { demo: 'Demo', extremo: 'Peor caso', vacio: 'Vacío', uno: 'Uno' };
+---
+
+<Base title="Datos extremos" footerInfo={data.info} noindex>
+  <section class="wrap section">
+    <h1 class="head">Banco de pruebas: {labels[estado]}</h1>
+  </section>
+  <TeamCards members={data.team} />
+  <PlanTiles items={data.plans} />
+  <PlanComparison items={data.plans} rows={data.comparison} />
+  <section class="wrap section" aria-labelledby="faq-dev">
+    <h2 id="faq-dev" class="head">
+      Preguntas
+    </h2>
+    <Accordion items={data.faq} name="dev" />
+  </section>
+  <section class="wrap section form-dev" aria-labelledby="form-dev">
+    <h2 id="form-dev" class="head">
+      Formulario
+    </h2>
+    <ContactForm />
+  </section>
+
+  <nav class="dev-toggle" aria-label="Conjunto de datos">
+    {(Object.keys(labels) as Estado[]).map((k) => (
+      <a href={`/dev/${k}`} aria-current={k === estado ? 'page' : undefined}>
+        {labels[k]}
+      </a>
+    ))}
+  </nav>
+</Base>
+
+<style>
+  .form-dev {
+    max-width: 48rem;
+  }
+  .dev-toggle {
+    position: fixed;
+    z-index: 60;
+    left: 50%;
+    bottom: 12px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: #d4d4d4;
+    font:
+      13px/1 system-ui,
+      sans-serif;
+  }
+  .dev-toggle a {
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: #333;
+    text-decoration: none;
+  }
+  .dev-toggle a[aria-current='page'] {
+    background: #fff;
+    color: #000;
+  }
+</style>

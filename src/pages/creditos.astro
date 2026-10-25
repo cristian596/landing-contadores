@@ -1,0 +1,25 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { photos } from '../data/photos';
+
+const list = Object.values(photos);
+---
+
+<Legal
+  title="Créditos de las fotografías"
+  description="Autores de las fotografías de Unsplash usadas en este sitio."
+>
+  <p>
+    Las fotografías de este sitio provienen de{' '}
+    <a href="https://unsplash.com/?utm_source=plantilla_contadores&utm_medium=referral">Unsplash</a> y se usan
+    bajo la licencia de Unsplash. Las personas que aparecen en ellas no forman parte de nuestro equipo salvo
+    que se indique lo contrario.
+  </p>
+  <ul class="credits">
+    {list.map((p) => (
+      <li>
+        <a href={p.photoUrl}>{p.alt}</a>. Foto de <a href={p.authorUrl}>{p.author}</a> en Unsplash.
+      </li>
+    ))}
+  </ul>
+</Legal>

@@ -1,0 +1,137 @@
+---
+import { Picture } from 'astro:assets';
+import { team as defaultTeam, type Member } from '../data/team';
+import { photos } from '../data/photos';
+import { site } from '../config/site';
+
+interface Props {
+  members?: Member[];
+}
+const { members = defaultTeam } = Astro.props;
+---
+
+<section class="people wrap section" aria-labelledby="people-title">
+  <h2 id="people-title" class="head people-title" data-reveal>
+    Quiénes te atienden
+  </h2>
+  {members.length === 0 ? (
+    <p class="empty">Pronto presentaremos a nuestro equipo. Mientras tanto, escríbenos a {site.email}.</p>
+  ) : (
+    <ul class="cards">
+      {members.map((m, i) => (
+        <li class="card" data-reveal data-delay={String((i % 2) + 1)}>
+          <div class="card-photo">
+            <Picture
+              src={photos[m.photo].src}
+              alt={m.role ? `Retrato de ${m.name}, ${m.role}` : `Retrato de ${m.name}`}
+              formats={['avif', 'webp']}
+              widths={[320, 480, 720]}
+              sizes="(min-width: 64em) 20vw, (min-width: 40em) 40vw, 100vw"
+              loading="lazy"
+            />
+          </div>
+          <div class="card-text">
+            <h3 class="card-name" dir="auto">
+              {m.name}
+            </h3>
+            {m.role && (
+              <p class="card-role" dir="auto">
+                {m.role}
+              </p>
+            )}
+            {m.bio && (
+              <p class="card-bio" dir="auto">
+                {m.bio}
+              </p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>
+
+<style>
+  .people {
+    background: var(--surface);
+  }
+  .people-title {
+    max-width: 12ch;
+    margin-bottom: 3rem;
+  }
+  .cards {
+    display: grid;
+    gap: 1rem;
+  }
+  .card {
+    display: grid;
+    background: var(--bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .card-photo {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--surface-strong);
+  }
+  .card-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 900ms var(--ease-soft);
+  }
+  .card-text {
+    padding: 1.5rem;
+    min-width: 0;
+  }
+  .card-name {
+    font-size: var(--step-lead);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  .card-role {
+    margin-top: 0.25rem;
+    font-weight: 500;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+  .card-bio {
+    margin-top: 1rem;
+  }
+  .empty {
+    padding: 2rem;
+    border-radius: var(--radius);
+    background: var(--bg);
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 40em) {
+    .cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64em) {
+    .cards {
+      gap: var(--gutter);
+    }
+  }
+  /* La tarjeta horizontal solo cuando la columna de texto tiene ancho para una biografía larga. */
+  @media (min-width: 80em) {
+    .card {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+    .card-photo {
+      aspect-ratio: auto;
+      min-height: 22rem;
+    }
+    .card-text {
+      padding: 2rem;
+      align-self: end;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .card:hover .card-photo :global(img) {
+      scale: 1.04;
+    }
+  }
+</style>

@@ -1,0 +1,13 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": [
+    "dist",
+    "dist-e2e",
+    "node_modules",
+    ".taste-skill",
+    ".work",
+    "playwright-report",
+    "test-results"
+  ]
+}
