@@ -39,45 +39,30 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
 <section class="benefits wrap section" aria-labelledby="benefits-title">
   <p class="statement" data-reveal>
     <span class="statement-main">
-      Tus{' '}
-      <span class="thumb">
-        <Picture
-          src={photos[thumbs[0]!.key].src}
-          alt=""
-          formats={['avif', 'webp']}
-          widths={[240, 480]}
-          sizes="(min-width: 64em) 22rem, 7rem"
-          loading="lazy"
-        />
-      </span>{' '}
-      facturas, tu{' '}
-      <span class="thumb">
-        <Picture
-          src={photos[thumbs[1]!.key].src}
-          alt=""
-          formats={['avif', 'webp']}
-          widths={[240, 480]}
-          sizes="(min-width: 64em) 22rem, 7rem"
-          loading="lazy"
-        />
-      </span>{' '}
-      nómina y tu{' '}
-      <span class="nowrap">
-        <span class="thumb">
-          <Picture
-            src={photos[thumbs[2]!.key].src}
-            alt=""
-            formats={['avif', 'webp']}
-            widths={[240, 480]}
-            sizes="(min-width: 64em) 22rem, 7rem"
-            loading="lazy"
-          />
-        </span>{' '}
-        declaración de renta,
-      </span>
-    </span>{' '}
+      Tus facturas, tu nómina y tu <span class="keep">declaración de renta,</span>
+    </span>
     <span class="statement-sub">con contadores que conocen el trabajo independiente.</span>
   </p>
+
+  <ul class="cards">
+    {thumbs.map((thumb, i) => (
+      <li data-reveal data-delay={i + 1}>
+        <figure class="card">
+          <div class="card-photo">
+            <Picture
+              src={photos[thumb.key].src}
+              alt=""
+              formats={['avif', 'webp']}
+              widths={[320, 640, 960]}
+              sizes="(min-width: 64em) 30vw, 31vw"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>{thumb.word}</figcaption>
+        </figure>
+      </li>
+    ))}
+  </ul>
 
   <div class="axis">
     <h2 id="benefits-title" class="head benefits-title" data-reveal>
@@ -109,7 +94,7 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
 
 <style>
   .benefits {
-    padding-block: clamp(2.5rem, 5vw, 5rem);
+    padding-block: 2.5rem;
   }
   .statement {
     max-width: none;
@@ -120,8 +105,8 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
   }
   .statement-main {
     display: block;
-    font-size: clamp(2.25rem, 1.2rem + 4.6vw, 4.5rem);
-    text-wrap: pretty;
+    font-size: clamp(2.5rem, 1rem + 8vw, 10rem);
+    text-wrap: balance;
   }
   .statement-sub {
     display: block;
@@ -130,24 +115,40 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
     line-height: 1.3;
     letter-spacing: -0.01em;
     color: var(--muted);
+    text-wrap: balance;
   }
-  .thumb {
-    display: inline-block;
-    width: 2.2em;
-    height: 0.72em;
-    vertical-align: baseline;
-    border-radius: 0.14em;
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  .card-photo {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
     overflow: hidden;
     background: var(--surface);
   }
-  .thumb :global(picture),
-  .thumb :global(img) {
+  .card-photo :global(picture),
+  .card-photo :global(img) {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: var(--step-small);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  figcaption::first-letter {
+    text-transform: uppercase;
+  }
   .axis {
-    margin-top: clamp(3rem, 6vw, 5.5rem);
+    margin-top: clamp(2rem, 5vw, 4rem);
   }
   .benefits-title {
     max-width: 10ch;
@@ -196,17 +197,28 @@ const rows: { title: string; text: string; photo: PhotoKey; shape: 'tall' | 'wid
   }
 
   @media (min-width: 48em) {
-    .nowrap {
-      white-space: nowrap;
+    .benefits {
+      padding-block: 5rem;
     }
-    .statement-main {
-      font-size: clamp(2.25rem, calc((100vw - 2 * var(--margin)) / 12.6), 12rem);
+    .keep {
+      white-space: nowrap;
     }
     .statement-sub {
       width: calc(50% - var(--gutter) / 2);
       margin-top: 2rem;
       margin-left: auto;
       font-size: var(--step-sub);
+    }
+    .cards {
+      gap: var(--gutter);
+      margin-top: 3rem;
+    }
+    .card-photo {
+      aspect-ratio: 4 / 3;
+    }
+    figcaption {
+      margin-top: 0.75rem;
+      font-size: var(--step-body);
     }
   }
 
