@@ -169,12 +169,12 @@ const { title, description, toc = [] } = Astro.props;
     }
     .legal-aside {
       position: sticky;
-      top: 2rem;
+      top: calc(var(--header-h) + 1.5rem);
       align-self: start;
     }
     .toc {
       position: sticky;
-      top: 2rem;
+      top: calc(var(--header-h) + 1.5rem);
     }
   }
 </style>

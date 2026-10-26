@@ -60,8 +60,11 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'
 
 <style>
   .site-header {
-    position: relative;
+    position: sticky;
+    top: 0;
     z-index: 20;
+    background: var(--bg);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -71,7 +74,9 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'
     color: var(--ink);
   }
   .site-header--dark {
+    background: var(--field);
     color: var(--on-field);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--on-field) 12%, transparent);
   }
   .wordmark {
     font-size: var(--step-body);
@@ -127,6 +132,9 @@ const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/'
   .mobile-menu {
     position: absolute;
     inset: 100% 0 auto 0;
+    max-height: calc(100svh - var(--header-h));
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 1rem var(--margin) 1.5rem;
     background: var(--field);
     color: var(--on-field);

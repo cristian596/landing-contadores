@@ -39,6 +39,7 @@
   --t-hover: 180ms;
   --t-ui: 240ms;
   --t-reveal: 800ms;
+  --header-h: calc(5rem + env(safe-area-inset-top, 0px)); /* alto del header fijo */
 }
 
 /* ---------- reset ---------- */
@@ -51,6 +52,7 @@
   box-sizing: border-box;
 }
 html {
+  scroll-padding-top: var(--header-h);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
@@ -113,7 +115,7 @@ a {
   color: inherit;
 }
 :target {
-  scroll-margin-top: 2rem;
+  scroll-margin-top: 1rem;
 }
 ::selection {
   background: var(--accent);
